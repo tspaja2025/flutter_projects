@@ -2,18 +2,18 @@ import "package:flutter/material.dart";
 import "package:flutter_projects/screens/default_screen.dart";
 
 void main() {
-  runApp(const MyApp());
+  runApp(const MyProjects());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MyProjects extends StatelessWidget {
+  const MyProjects({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "Flutter Projects",
       debugShowCheckedModeBanner: false,
-      theme: ThemeData.dark(),
+      darkTheme: ThemeData.dark(),
+      title: "Flutter Projects",
       home: const DefaultScreen(),
     );
   }
