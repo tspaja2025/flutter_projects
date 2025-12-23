@@ -113,24 +113,18 @@ class QrGeneratorScreenState extends State<StatefulWidget> {
                           },
                         ),
                         const SizedBox(height: 12),
-                        OutlinedButton(
-                          onPressed: _foregroundColor,
-                          child: const Text("Foreground Color"),
-                        ),
-                        OutlinedButton(
-                          onPressed: _backgroundColor,
-                          child: const Text("Background Color"),
-                        ),
-                        const SizedBox(height: 12),
-                        FilledButton(
-                          onPressed: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute<void>(
-                                builder: (context) => const QrGeneratedScreen(),
-                              ),
-                            );
-                          },
-                          child: const Text("Generate QR Code"),
+                        Row(
+                          mainAxisAlignment: .spaceEvenly,
+                          children: [
+                            OutlinedButton(
+                              onPressed: _foregroundColor,
+                              child: const Text("Foreground Color"),
+                            ),
+                            OutlinedButton(
+                              onPressed: _backgroundColor,
+                              child: const Text("Background Color"),
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -140,6 +134,16 @@ class QrGeneratorScreenState extends State<StatefulWidget> {
             ],
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute<void>(
+              builder: (context) => const QrGeneratedScreen(),
+            ),
+          );
+        },
+        child: const Icon(Icons.qr_code_outlined),
       ),
     );
   }

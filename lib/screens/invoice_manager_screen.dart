@@ -172,7 +172,7 @@ class InvoiceManagerScreenState extends State<StatefulWidget> {
           ),
         ),
       ),
-      floatingActionButton: IconButton.filled(
+      floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context).push(
             MaterialPageRoute<void>(
@@ -180,7 +180,7 @@ class InvoiceManagerScreenState extends State<StatefulWidget> {
             ),
           );
         },
-        icon: const Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }

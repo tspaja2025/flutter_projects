@@ -15,6 +15,7 @@ class ChatScreenState extends State<ChatScreen> {
         child: Padding(
           padding: const .all(16),
           child: Column(
+            mainAxisAlignment: .spaceBetween,
             children: [
               Row(
                 children: [
@@ -40,7 +41,6 @@ class ChatScreenState extends State<ChatScreen> {
                   ),
                 ],
               ),
-              const SizedBox(height: 556),
               Row(
                 children: [
                   IconButton(

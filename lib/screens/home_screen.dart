@@ -73,6 +73,11 @@ class HomeScreenState extends State<StatefulWidget> {
       "icon": Icons.list_outlined,
       "description": "Track tasks and mark progress.",
     },
+    {
+      "title": "Calculator",
+      "icon": Icons.calculate,
+      "description": "Calculate expressions.",
+    },
   ];
 
   @override

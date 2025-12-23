@@ -154,7 +154,28 @@ class MailInboxScreenState extends State<MailInboxScreen> {
       body: SafeArea(
         child: Padding(
           padding: const .all(16),
-          child: Column(children: [const Text("Inbox screen")]),
+          child: Column(
+            children: [
+              Card(
+                child: InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (context) => const MailViewScreen(
+                          title: "[Repo] New Pull request submitted",
+                        ),
+                      ),
+                    );
+                  },
+                  child: ListTile(
+                    leading: CircleAvatar(child: const Text("A")),
+                    title: const Text("[Repo] New Pull request submitted"),
+                    subtitle: const Text("A new request has been submitted..."),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -286,6 +307,105 @@ class MailTrashScreenState extends State<MailTrashScreen> {
           padding: const .all(16),
           child: Column(children: [const Text("Trash screen")]),
         ),
+      ),
+    );
+  }
+}
+
+class MailViewScreen extends StatefulWidget {
+  final String title;
+
+  const MailViewScreen({super.key, required this.title});
+
+  @override
+  State<MailViewScreen> createState() => MailViewScreenState();
+}
+
+class MailViewScreenState extends State<MailViewScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+        centerTitle: true,
+        actions: [AppBarActions()],
+      ),
+      body: SafeArea(
+        child: Padding(
+          padding: const .all(16),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: .spaceBetween,
+                children: [
+                  Text(widget.title),
+                  MenuAnchor(
+                    builder: (context, controller, child) {
+                      return IconButton(
+                        onPressed: () {
+                          if (controller.isOpen) {
+                            controller.close();
+                          } else {
+                            controller.open();
+                          }
+                        },
+                        icon: const Icon(Icons.more_vert),
+                      );
+                    },
+                    menuChildren: [
+                      MenuItemButton(
+                        onPressed: () {},
+                        leadingIcon: Icon(Icons.star),
+                        child: const Text("Favorite"),
+                      ),
+                      MenuItemButton(
+                        onPressed: () {},
+                        leadingIcon: Icon(Icons.archive),
+                        child: const Text("Archive"),
+                      ),
+                      MenuItemButton(
+                        onPressed: () {},
+                        leadingIcon: Icon(Icons.delete),
+                        child: const Text("Delete"),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              const Divider(),
+              ListTile(
+                leading: CircleAvatar(child: const Text("A")),
+                title: Row(
+                  spacing: 8,
+                  children: [
+                    const Text("Github"),
+                    Text(
+                      "notifications@github.com",
+                      style: TextTheme.of(
+                        context,
+                      ).titleSmall?.copyWith(color: Colors.grey),
+                    ),
+                  ],
+                ),
+                subtitle: Text(
+                  "Today at 10:50",
+                  style: TextTheme.of(
+                    context,
+                  ).titleSmall?.copyWith(color: Colors.grey),
+                ),
+              ),
+              const Divider(),
+              const SizedBox(height: 12),
+              const Text(
+                "A new pull request has been submitted to your repository. Please review the changes when you have a moment. The changes include bug fixes and new features for the authentication module.",
+              ),
+            ],
+          ),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: const Icon(Icons.reply),
       ),
     );
   }

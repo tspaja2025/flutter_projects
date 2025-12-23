@@ -8,6 +8,8 @@ class ToDoScreen extends StatefulWidget {
 }
 
 class ToDoScreenState extends State<StatefulWidget> {
+  TodoView todoView = TodoView.all;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,6 +25,35 @@ class ToDoScreenState extends State<StatefulWidget> {
                 ),
               ),
               const SizedBox(height: 12),
+              Row(
+                mainAxisAlignment: .center,
+                children: [
+                  SegmentedButton(
+                    showSelectedIcon: false,
+                    segments: [
+                      ButtonSegment(
+                        value: TodoView.all,
+                        label: const Text("All"),
+                      ),
+                      ButtonSegment(
+                        value: TodoView.active,
+                        label: const Text("Active"),
+                      ),
+                      ButtonSegment(
+                        value: TodoView.completed,
+                        label: const Text("Completed"),
+                      ),
+                    ],
+                    selected: {todoView},
+                    onSelectionChanged: (newSelection) {
+                      setState(() {
+                        todoView = newSelection.first;
+                      });
+                    },
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
               TodoItem(title: "Learn Flutter"),
               TodoItem(title: "Build To Do App"),
               TodoItem(title: "Write Documentation"),
@@ -33,6 +64,8 @@ class ToDoScreenState extends State<StatefulWidget> {
     );
   }
 }
+
+enum TodoView { all, active, completed }
 
 class TodoItem extends StatefulWidget {
   final String title;

@@ -46,9 +46,9 @@ class FileManagerScreenState extends State<StatefulWidget> {
           ),
         ),
       ),
-      floatingActionButton: IconButton.filled(
+      floatingActionButton: FloatingActionButton(
         onPressed: () {},
-        icon: const Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }

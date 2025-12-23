@@ -102,9 +102,9 @@ class KanbanBoardScreenState extends State<KanbanBoardScreen> {
           ),
         ),
       ),
-      floatingActionButton: IconButton.filled(
+      floatingActionButton: FloatingActionButton(
         onPressed: () {},
-        icon: const Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }

@@ -1,4 +1,7 @@
+import "dart:collection";
+
 import "package:flutter/material.dart";
+import "package:flutter_projects/widgets/app_bar_actions.dart";
 
 class NoteTakerScreen extends StatefulWidget {
   const NoteTakerScreen({super.key});
@@ -71,9 +74,15 @@ class NoteTakerScreenState extends State<StatefulWidget> {
           ),
         ),
       ),
-      floatingActionButton: IconButton.filled(
-        onPressed: () {},
-        icon: const Icon(Icons.add),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute<void>(
+              builder: (context) => const CreateNoteScreen(),
+            ),
+          );
+        },
+        child: const Icon(Icons.add),
       ),
     );
   }
@@ -145,3 +154,91 @@ class NoteItem extends StatelessWidget {
     );
   }
 }
+
+class CreateNoteScreen extends StatefulWidget {
+  const CreateNoteScreen({super.key});
+
+  @override
+  State<CreateNoteScreen> createState() => CreateNoteScreenState();
+}
+
+class CreateNoteScreenState extends State<CreateNoteScreen> {
+  String categoryValue = categories.first;
+
+  static final List<MenuEntry> categoryList = UnmodifiableListView<MenuEntry>(
+    categories.map<MenuEntry>(
+      (String name) => MenuEntry(value: name, label: name),
+    ),
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Create New Note"),
+        centerTitle: true,
+        actions: [AppBarActions()],
+      ),
+      body: SafeArea(
+        child: Padding(
+          padding: const .all(16),
+          child: Column(
+            crossAxisAlignment: .start,
+            children: [
+              TextField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  floatingLabelBehavior: .always,
+                  label: const Text("Title"),
+                  hintText: "Enter title",
+                ),
+              ),
+              const SizedBox(height: 16),
+              DropdownMenu(
+                width: double.infinity,
+                initialSelection: categories.first,
+                label: const Text("Select Category"),
+                onSelected: (String? value) {
+                  setState(() {
+                    categoryValue = value!;
+                  });
+                },
+                dropdownMenuEntries: categoryList,
+              ),
+              const SizedBox(height: 16),
+              TextField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  floatingLabelBehavior: .always,
+                  label: const Text("Tags"),
+                  hintText: "tag1,tag2,tag3",
+                  helperText: "comma-separated",
+                ),
+              ),
+              const SizedBox(height: 16),
+              TextField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  floatingLabelBehavior: .always,
+                  label: const Text("Content"),
+                  hintText: "Enter note content",
+                ),
+                maxLines: 3,
+              ),
+            ],
+          ),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        child: const Icon(Icons.save),
+      ),
+    );
+  }
+}
+
+typedef MenuEntry = DropdownMenuEntry<String>;
+
+const List<String> categories = ["Personal", "Work", "Ideas"];

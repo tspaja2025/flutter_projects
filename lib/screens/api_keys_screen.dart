@@ -299,7 +299,7 @@ class ApiKeyGeneratorScreenState extends State<StatefulWidget> {
           ),
         ),
       ),
-      floatingActionButton: IconButton.filled(
+      floatingActionButton: FloatingActionButton(
         onPressed: () {
           showDialog<String>(
             context: context,
@@ -336,7 +336,7 @@ class ApiKeyGeneratorScreenState extends State<StatefulWidget> {
             },
           );
         },
-        icon: const Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }

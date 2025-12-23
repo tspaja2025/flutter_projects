@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:flutter_projects/screens/api_keys_screen.dart";
+import "package:flutter_projects/screens/calculator_screen.dart";
 import "package:flutter_projects/screens/chat_screen.dart";
 import "package:flutter_projects/screens/event_calendar_screen.dart";
 import "package:flutter_projects/screens/file_manager_screen.dart";
@@ -36,6 +37,7 @@ class DefaultScreenState extends State<StatefulWidget> {
     const NoteTakerScreen(),
     const QrGeneratorScreen(),
     const ToDoScreen(),
+    const CalculatorScreen(),
   ];
 
   @override
