@@ -1,40 +1,31 @@
-import "dart:io";
-import "dart:js_interop";
-import "package:web/web.dart" as web;
-import "dart:ui" as ui;
-import "package:path_provider/path_provider.dart";
 import "package:flex_color_picker/flex_color_picker.dart";
-import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
-import "package:flutter/rendering.dart";
-import "package:flutter_projects/widgets/app_bar_actions.dart";
+import "package:flutter_projects/widgets/app_bar_actions_widget.dart";
 import "package:qr_flutter/qr_flutter.dart";
 
 class QrGeneratorScreen extends StatefulWidget {
   const QrGeneratorScreen({super.key});
 
   @override
-  State<StatefulWidget> createState() => QrGeneratorScreenState();
+  State<QrGeneratorScreen> createState() => QrGeneratorScreenState();
 }
 
-class QrGeneratorScreenState extends State<StatefulWidget> {
-  double _currentSliderValue = 128;
-  Color _foreground = Colors.black;
-  Color _background = Colors.white;
+class QrGeneratorScreenState extends State<QrGeneratorScreen> {
+  double _sliderValue = 256;
+  Color _foregroundColor = Colors.white;
+  Color _backgroundColor = Colors.black;
 
-  final TextEditingController _textController = TextEditingController();
-
-  Future<void> _foregroundColor() async {
-    await ColorPicker(
-      color: _foreground,
+  Future<void> _openForegroundColor() async {
+    bool pickedColor = await ColorPicker(
+      color: _foregroundColor,
       onColorChanged: (Color newColor) {
         setState(() {
-          _foreground = newColor;
+          _foregroundColor = newColor;
         });
       },
       width: 40,
       height: 40,
-      borderRadius: 16,
+      borderRadius: 12,
       spacing: 10,
       runSpacing: 10,
       heading: const Text("Foreground Color"),
@@ -43,20 +34,20 @@ class QrGeneratorScreenState extends State<StatefulWidget> {
     ).showPickerDialog(context);
   }
 
-  Future<void> _backgroundColor() async {
-    await ColorPicker(
-      color: _background,
+  Future<void> _openBackgroundColor() async {
+    bool pickedColor = await ColorPicker(
+      color: _backgroundColor,
       onColorChanged: (Color newColor) {
         setState(() {
-          _background = newColor;
+          _backgroundColor = newColor;
         });
       },
       width: 40,
       height: 40,
-      borderRadius: 16,
+      borderRadius: 12,
       spacing: 10,
       runSpacing: 10,
-      heading: const Text("Foreground Color"),
+      heading: const Text("Background Color"),
       wheelDiameter: 200,
       wheelWidth: 20,
     ).showPickerDialog(context);
@@ -64,208 +55,228 @@ class QrGeneratorScreenState extends State<StatefulWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const .all(16),
-          child: Column(
-            children: [
-              SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child: Card(
-                  child: Padding(
-                    padding: const .all(16),
-                    child: Column(
-                      crossAxisAlignment: .start,
-                      children: [
-                        Text(
-                          "Configure you QR Code",
-                          style: Theme.of(context).textTheme.titleMedium,
-                        ),
-                        Text(
-                          "Enter your content and customize the appearance",
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                        const SizedBox(height: 12),
-                        TextField(
-                          controller: _textController,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            label: const Text("Content"),
-                          ),
-                        ),
-                        const SizedBox(height: 12),
-                        const Divider(),
-                        Text(
-                          "Settings",
-                          style: Theme.of(context).textTheme.titleMedium,
-                        ),
-                        const SizedBox(height: 12),
-                        Slider(
-                          value: _currentSliderValue,
-                          max: 512,
-                          min: 128,
-                          label: _currentSliderValue.round().toString(),
-                          onChanged: (double value) {
-                            setState(() {
-                              _currentSliderValue = value;
-                            });
-                          },
-                        ),
-                        const SizedBox(height: 12),
-                        Row(
-                          mainAxisAlignment: .spaceEvenly,
-                          children: [
-                            OutlinedButton(
-                              onPressed: _foregroundColor,
-                              child: const Text("Foreground Color"),
-                            ),
-                            OutlinedButton(
-                              onPressed: _backgroundColor,
-                              child: const Text("Background Color"),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final bool isLargeScreen = constraints.maxWidth >= 720;
+
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text("QR Generator"),
+            centerTitle: true,
+            actionsPadding: const .only(right: 8),
+            actions: isLargeScreen ? null : [AppBarActionsWidget()],
           ),
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute<void>(
-              builder: (context) => const QrGeneratedScreen(),
-            ),
-          );
-        },
-        child: const Icon(Icons.qr_code_outlined),
-      ),
-    );
-  }
-}
-
-class QrGeneratedScreen extends StatefulWidget {
-  const QrGeneratedScreen({super.key});
-
-  @override
-  State<QrGeneratedScreen> createState() => QrGeneratedScreenState();
-}
-
-class QrGeneratedScreenState extends State<QrGeneratedScreen> {
-  final double _currentSliderValue = 128;
-  final Color _foreground = Colors.black;
-  final Color _background = Colors.white;
-
-  final GlobalKey _qrKey = GlobalKey();
-
-  Future<void> _downloadQr() async {
-    if (kIsWeb) {
-      await _downloadQrWeb();
-    } else {
-      await _downloadQrFile();
-    }
-  }
-
-  Future<void> _downloadQrWeb() async {
-    final boundary =
-        _qrKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
-    final image = await boundary.toImage(pixelRatio: 3);
-    final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-    final pngBytes = byteData!.buffer.asUint8List().toJS;
-    final blob = web.Blob(JSArray.from(pngBytes));
-    final url = web.URL.createObjectURL(blob);
-
-    web.HTMLAnchorElement()
-      ..setAttribute("download", "qr_code.png")
-      ..click();
-    web.URL.revokeObjectURL(url);
-  }
-
-  Future<void> _downloadQrFile() async {
-    final boundary =
-        _qrKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
-    final image = await boundary.toImage(pixelRatio: 3);
-    final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-    final pngBytes = byteData!.buffer.asUint8List();
-    final directory = await getApplicationDocumentsDirectory();
-    final file = File(
-      "${directory.path}/qr_${DateTime.now().millisecondsSinceEpoch}.png",
-    );
-
-    await file.writeAsBytes(pngBytes);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Your QR Code"),
-        centerTitle: true,
-        actions: [AppBarActions()],
-      ),
-      body: SafeArea(
-        child: Padding(
-          padding: const .all(16),
-          child: Column(
-            children: [
-              SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child: Card(
-                  child: Padding(
-                    padding: const .all(16),
-                    child: Column(
-                      crossAxisAlignment: .start,
-                      children: [
-                        Text(
-                          "Preview and Download",
-                          style: Theme.of(context).textTheme.titleMedium,
-                        ),
-                        Text(
-                          "You QR code will appear here",
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                        const SizedBox(height: 12),
-                        Center(
-                          child: Container(
-                            padding: const .all(16),
-                            decoration: BoxDecoration(
-                              border: .all(),
-                              borderRadius: .circular(12),
-                            ),
-                            child: RepaintBoundary(
-                              key: _qrKey,
-                              child: QrImageView(
-                                data: " ",
-                                version: QrVersions.auto,
-                                errorCorrectionLevel: QrErrorCorrectLevel.H,
-                                size: _currentSliderValue,
-                                backgroundColor: _background,
-                                foregroundColor: _foreground,
+          body: SafeArea(
+            child: Padding(
+              padding: const .all(16),
+              child: Column(
+                children: [
+                  Center(
+                    child: SizedBox(
+                      width: 312,
+                      child: Card(
+                        child: Padding(
+                          padding: const .all(16),
+                          child: Column(
+                            crossAxisAlignment: .start,
+                            children: [
+                              Text(
+                                "Configure QR Code",
+                                style: TextTheme.of(context).titleLarge,
                               ),
-                            ),
+                              Text(
+                                "Enter your content and customize the appearance",
+                                style: TextTheme.of(
+                                  context,
+                                ).titleSmall?.copyWith(color: Colors.grey),
+                              ),
+
+                              const SizedBox(height: 16),
+                              TextField(
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  label: const Text("Text"),
+                                ),
+                              ),
+
+                              const SizedBox(height: 16),
+                              Text(
+                                "Settings",
+                                style: TextTheme.of(context).titleMedium,
+                              ),
+
+                              const SizedBox(height: 16),
+                              Text("Size: ${_sliderValue.toInt()}px"),
+                              Slider(
+                                value: _sliderValue,
+                                min: 128,
+                                max: 512,
+                                divisions: 12,
+                                onChanged: (double value) {
+                                  setState(() {
+                                    _sliderValue = value;
+                                  });
+                                },
+                              ),
+                              const SizedBox(height: 16),
+                              Row(
+                                mainAxisAlignment: .spaceEvenly,
+                                children: [
+                                  FilledButton(
+                                    onPressed: _openForegroundColor,
+                                    child: const Text("Foreground"),
+                                  ),
+                                  FilledButton(
+                                    onPressed: _openBackgroundColor,
+                                    child: const Text("Background"),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 16),
+                              Row(
+                                mainAxisAlignment: .end,
+                                spacing: 8,
+                                children: [
+                                  FilledButton(
+                                    onPressed: () {},
+                                    child: const Text("Reset"),
+                                  ),
+                                  if (isLargeScreen)
+                                    FilledButton(
+                                      onPressed: () {
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const GeneratedQrScreen(),
+                                          ),
+                                        );
+                                      },
+                                      child: const Text("Generate"),
+                                    ),
+                                ],
+                              ),
+                            ],
                           ),
                         ),
-                        const SizedBox(height: 12),
-                        const Divider(),
-                        const SizedBox(height: 12),
-                        FilledButton(
-                          onPressed: _downloadQr,
-                          child: const Text("Download PNG"),
-                        ),
-                      ],
+                      ),
                     ),
                   ),
-                ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
-      ),
+          floatingActionButton: isLargeScreen
+              ? null
+              : FloatingActionButton.extended(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const GeneratedQrScreen(),
+                      ),
+                    );
+                  },
+                  label: const Text("Generate"),
+                ),
+        );
+      },
+    );
+  }
+}
+
+class GeneratedQrScreen extends StatefulWidget {
+  const GeneratedQrScreen({super.key});
+
+  @override
+  State<GeneratedQrScreen> createState() => GeneratedQrScreenState();
+}
+
+class GeneratedQrScreenState extends State<GeneratedQrScreen> {
+  final Color _foregroundColor = Colors.white;
+  final Color _backgroundColor = Colors.black;
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final bool isLargeScreen = constraints.maxWidth >= 720;
+
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text("Generated QR"),
+            centerTitle: true,
+            actionsPadding: const .only(right: 8),
+            actions: isLargeScreen ? null : [AppBarActionsWidget()],
+          ),
+          body: SafeArea(
+            child: Padding(
+              padding: const .all(16),
+              child: Column(
+                children: [
+                  Center(
+                    child: SizedBox(
+                      width: 312,
+                      child: Card(
+                        child: Padding(
+                          padding: const .all(16),
+                          child: Column(
+                            crossAxisAlignment: .start,
+                            children: [
+                              Text(
+                                "Preview and Download",
+                                style: TextTheme.of(context).titleLarge,
+                              ),
+                              Text(
+                                "Your QR code preview",
+                                style: TextTheme.of(
+                                  context,
+                                ).titleSmall?.copyWith(color: Colors.grey),
+                              ),
+
+                              const SizedBox(height: 16),
+                              Center(
+                                child: QrImageView(
+                                  data: '1234567890',
+                                  version: QrVersions.auto,
+                                  errorCorrectionLevel: QrErrorCorrectLevel.H,
+                                  backgroundColor: _backgroundColor,
+                                  foregroundColor: _foregroundColor,
+                                  size: 200.0,
+                                ),
+                              ),
+
+                              const SizedBox(height: 16),
+                              if (isLargeScreen)
+                                Row(
+                                  mainAxisAlignment: .center,
+                                  children: [
+                                    FilledButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Text("Download"),
+                                    ),
+                                  ],
+                                ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          floatingActionButton: isLargeScreen
+              ? null
+              : FloatingActionButton.extended(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  label: const Icon(Icons.download_outlined),
+                ),
+        );
+      },
     );
   }
 }
