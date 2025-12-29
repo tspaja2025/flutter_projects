@@ -2,9 +2,14 @@ import "package:flex_color_picker/flex_color_picker.dart";
 import "package:flutter/material.dart";
 import "package:flutter_projects/widgets/app_bar_actions_widget.dart";
 
-class EventCalendarScreen extends StatelessWidget {
+class EventCalendarScreen extends StatefulWidget {
   const EventCalendarScreen({super.key});
 
+  @override
+  State<EventCalendarScreen> createState() => EventCalendarScreenState();
+}
+
+class EventCalendarScreenState extends State<EventCalendarScreen> {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -63,16 +68,41 @@ class EventCalendarScreen extends StatelessWidget {
                               ),
                           itemCount: 42,
                           itemBuilder: (context, index) {
-                            return Container(
-                              decoration: BoxDecoration(
-                                border: .all(
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.surfaceContainerHigh,
+                            return GestureDetector(
+                              // TODO: Troubleshoot onTap behaviour
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const EventItemListScreen(),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: .all(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.surfaceContainerHigh,
+                                  ),
+                                ),
+                                padding: const .all(16),
+                                child: Column(
+                                  crossAxisAlignment: .start,
+                                  children: [
+                                    Text("$index"),
+                                    const SizedBox(height: 4),
+                                    EventItem(
+                                      title: "Event",
+                                      eventColor: Colors.blue,
+                                    ),
+                                    EventItem(
+                                      title: "Event",
+                                      eventColor: Colors.purple,
+                                    ),
+                                  ],
                                 ),
                               ),
-                              padding: const .all(16),
-                              child: Text("$index"),
                             );
                           },
                         );
@@ -92,6 +122,64 @@ class EventCalendarScreen extends StatelessWidget {
                         builder: (context) => const CreateNewEventScreen(),
                       ),
                     );
+                  },
+                  child: const Icon(Icons.add),
+                ),
+        );
+      },
+    );
+  }
+}
+
+class EventItem extends StatelessWidget {
+  final String title;
+  final Color eventColor;
+
+  const EventItem({super.key, required this.title, required this.eventColor});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const .symmetric(horizontal: 8, vertical: 2),
+      decoration: BoxDecoration(borderRadius: .circular(12), color: eventColor),
+      child: Text(title),
+    );
+  }
+}
+
+class EventItemListScreen extends StatefulWidget {
+  const EventItemListScreen({super.key});
+
+  @override
+  State<EventItemListScreen> createState() => EventItemListScreenState();
+}
+
+class EventItemListScreenState extends State<EventItemListScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final bool isLargeScreen = constraints.maxWidth >= 720;
+
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text("Event List"),
+            centerTitle: true,
+            actionsPadding: const .only(right: 8),
+            actions: isLargeScreen ? null : [AppBarActionsWidget()],
+          ),
+          body: SafeArea(
+            child: Padding(
+              padding: const .all(16),
+              child: Column(children: [const Text("Event List")]),
+            ),
+          ),
+          floatingActionButton: isLargeScreen
+              ? null
+              : FloatingActionButton(
+                  onPressed: () {
+                    Navigator.pop(context);
                   },
                   child: const Icon(Icons.add),
                 ),
