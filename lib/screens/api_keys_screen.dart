@@ -191,21 +191,35 @@ class CreateApiKeyScreenState extends State<CreateApiKeyScreen> {
             child: Padding(
               padding: const .all(16),
               child: Column(
-                crossAxisAlignment: .end,
                 children: [
-                  TextField(
-                    decoration: InputDecoration(
-                      label: const Text("Key Name"),
-                      floatingLabelBehavior: .always,
-                      border: OutlineInputBorder(),
+                  Center(
+                    child: SizedBox(
+                      width: 312,
+                      child: Card(
+                        child: Padding(
+                          padding: const .all(16),
+                          child: Column(
+                            crossAxisAlignment: .end,
+                            children: [
+                              TextField(
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  floatingLabelBehavior: .always,
+                                  label: const Text("Key Name"),
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+                              FilledButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text("Create Key"),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 16),
-                  FilledButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Text("Save Key"),
                   ),
                 ],
               ),
@@ -217,7 +231,7 @@ class CreateApiKeyScreenState extends State<CreateApiKeyScreen> {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: const Icon(Icons.save_outlined),
+                  child: const Icon(Icons.add),
                 ),
         );
       },
