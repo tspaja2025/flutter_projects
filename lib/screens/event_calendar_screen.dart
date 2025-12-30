@@ -1,5 +1,4 @@
 import "package:flutter/material.dart";
-import "package:flutter_projects/widgets/card_list_tile_widget.dart";
 
 class EventCalendarScreen extends StatefulWidget {
   const EventCalendarScreen({super.key});
@@ -65,39 +64,41 @@ class EventCalendarScreenState extends State<EventCalendarScreen> {
                               ),
                           itemCount: 42,
                           itemBuilder: (context, index) {
-                            return GestureDetector(
-                              // TODO: Troubleshoot onTap behaviour
-                              onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        const EventItemListScreen(),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  border: .all(
-                                    color: Theme.of(
-                                      context,
-                                    ).colorScheme.surfaceContainerHigh,
-                                  ),
-                                ),
-                                padding: const .all(16),
-                                child: Column(
-                                  crossAxisAlignment: .start,
-                                  children: [
-                                    Text("$index"),
-                                    const SizedBox(height: 4),
-                                    EventItem(
-                                      title: "Event",
-                                      eventColor: Colors.blue,
+                            return MouseRegion(
+                              cursor: SystemMouseCursors.click,
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const EventItemListScreen(),
                                     ),
-                                    EventItem(
-                                      title: "Event",
-                                      eventColor: Colors.purple,
+                                  );
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    border: .all(
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.surfaceContainerHigh,
                                     ),
-                                  ],
+                                  ),
+                                  padding: const .all(16),
+                                  child: Column(
+                                    crossAxisAlignment: .start,
+                                    children: [
+                                      Text("$index"),
+                                      const SizedBox(height: 4),
+                                      EventItem(
+                                        title: "Event",
+                                        eventColor: Colors.blue,
+                                      ),
+                                      EventItem(
+                                        title: "Event",
+                                        eventColor: Colors.purple,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             );
