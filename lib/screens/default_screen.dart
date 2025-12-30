@@ -11,7 +11,7 @@ import "package:flutter_projects/screens/note_taker_screen.dart";
 import "package:flutter_projects/screens/qr_generator_screen.dart";
 import "package:flutter_projects/screens/todo_screen.dart";
 import "package:flutter_projects/widgets/app_bar_actions_widget.dart";
-import "package:flutter_projects/widgets/project_card_widget.dart";
+// import "package:flutter_projects/widgets/project_card_widget.dart";
 
 class DefaultScreen extends StatefulWidget {
   const DefaultScreen({super.key});
@@ -35,17 +35,16 @@ class DefaultScreenState extends State<DefaultScreen> {
             actions: isLargeScreen ? null : [AppBarActionsWidget()],
           ),
           body: SafeArea(
-            child: Column(
-              children: [
-                Expanded(
-                  child: GridView.count(
-                    primary: false,
-                    padding: const .all(16),
-                    crossAxisSpacing: 16,
-                    mainAxisSpacing: 16,
-                    crossAxisCount: 6,
+            child: Padding(
+              padding: const .all(16),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: .spaceEvenly,
+                    crossAxisAlignment: .start,
+                    spacing: 16,
                     children: [
-                      ProjectCard(
+                      CardListTile(
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute<void>(
@@ -55,10 +54,9 @@ class DefaultScreenState extends State<DefaultScreen> {
                         },
                         icon: Icons.api_outlined,
                         title: "API Keys",
-                        description:
-                            "Manage and store your API credentials securely.",
+                        subtitle: "Manage and store your API credentials.",
                       ),
-                      ProjectCard(
+                      CardListTile(
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute<void>(
@@ -68,9 +66,9 @@ class DefaultScreenState extends State<DefaultScreen> {
                         },
                         icon: Icons.calculate_outlined,
                         title: "Calculator",
-                        description: "Calculate expressions.",
+                        subtitle: "Calculate expressions.",
                       ),
-                      ProjectCard(
+                      CardListTile(
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute<void>(
@@ -80,9 +78,9 @@ class DefaultScreenState extends State<DefaultScreen> {
                         },
                         icon: Icons.chat_outlined,
                         title: "Chat",
-                        description: "Real-time messaging and conversations.",
+                        subtitle: "Real-time messaging and conversations.",
                       ),
-                      ProjectCard(
+                      CardListTile(
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute<void>(
@@ -92,9 +90,9 @@ class DefaultScreenState extends State<DefaultScreen> {
                         },
                         icon: Icons.calendar_today_outlined,
                         title: "Event Calendar",
-                        description: "Schedule and manage important events.",
+                        subtitle: "Schedule and manage important events.",
                       ),
-                      ProjectCard(
+                      CardListTile(
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute<void>(
@@ -104,9 +102,17 @@ class DefaultScreenState extends State<DefaultScreen> {
                         },
                         icon: Icons.folder_outlined,
                         title: "File Manager",
-                        description: "Browse and organize your files.",
+                        subtitle: "Browse and organize your files.",
                       ),
-                      ProjectCard(
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: .spaceEvenly,
+                    crossAxisAlignment: .start,
+                    spacing: 16,
+                    children: [
+                      CardListTile(
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute<void>(
@@ -117,9 +123,9 @@ class DefaultScreenState extends State<DefaultScreen> {
                         },
                         icon: Icons.receipt_outlined,
                         title: "Invoice Manager",
-                        description: "Create and track invoices easily.",
+                        subtitle: "Create and track invoices easily.",
                       ),
-                      ProjectCard(
+                      CardListTile(
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute<void>(
@@ -129,9 +135,9 @@ class DefaultScreenState extends State<DefaultScreen> {
                         },
                         icon: Icons.view_kanban_outlined,
                         title: "Kanban Board",
-                        description: "Organize tasks with kanban workflows.",
+                        subtitle: "Organize tasks with kanban workflows.",
                       ),
-                      ProjectCard(
+                      CardListTile(
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute<void>(
@@ -141,9 +147,9 @@ class DefaultScreenState extends State<DefaultScreen> {
                         },
                         icon: Icons.mail_outline,
                         title: "Mail",
-                        description: "Manage email communication.",
+                        subtitle: "Manage email communication.",
                       ),
-                      ProjectCard(
+                      CardListTile(
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute<void>(
@@ -153,9 +159,9 @@ class DefaultScreenState extends State<DefaultScreen> {
                         },
                         icon: Icons.sticky_note_2_outlined,
                         title: "Note Taker",
-                        description: "Create and keep all your notes.",
+                        subtitle: "Create and keep all your notes.",
                       ),
-                      ProjectCard(
+                      CardListTile(
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute<void>(
@@ -165,9 +171,17 @@ class DefaultScreenState extends State<DefaultScreen> {
                         },
                         icon: Icons.qr_code_outlined,
                         title: "QR Generator",
-                        description: "Generate custom QR code.",
+                        subtitle: "Generate custom QR code.",
                       ),
-                      ProjectCard(
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: .spaceEvenly,
+                    crossAxisAlignment: .start,
+                    spacing: 16,
+                    children: [
+                      CardListTile(
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute<void>(
@@ -177,16 +191,69 @@ class DefaultScreenState extends State<DefaultScreen> {
                         },
                         icon: Icons.list_outlined,
                         title: "To Do",
-                        description: "Track tasks and mark progress.",
+                        subtitle: "Track tasks and mark progress.",
+                      ),
+                      CardListTile(
+                        onTap: () {},
+                        icon: Icons.report_problem_outlined,
+                        title: "-",
+                        subtitle: "-",
+                      ),
+                      CardListTile(
+                        onTap: () {},
+                        icon: Icons.report_problem_outlined,
+                        title: "-",
+                        subtitle: "-",
+                      ),
+                      CardListTile(
+                        onTap: () {},
+                        icon: Icons.report_problem_outlined,
+                        title: "-",
+                        subtitle: "-",
+                      ),
+                      CardListTile(
+                        onTap: () {},
+                        icon: Icons.report_problem_outlined,
+                        title: "-",
+                        subtitle: "-",
                       ),
                     ],
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         );
       },
+    );
+  }
+}
+
+class CardListTile extends StatelessWidget {
+  final VoidCallback onTap;
+  final IconData icon;
+  final String title;
+  final String subtitle;
+
+  const CardListTile({
+    super.key,
+    required this.onTap,
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Card(
+        child: ListTile(
+          onTap: onTap,
+          leading: Icon(icon),
+          title: Text(title),
+          subtitle: Text(subtitle),
+        ),
+      ),
     );
   }
 }
