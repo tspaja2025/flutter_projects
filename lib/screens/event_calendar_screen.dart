@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:flutter_projects/widgets/card_list_tile_widget.dart";
 
 class EventCalendarScreen extends StatefulWidget {
   const EventCalendarScreen({super.key});
@@ -163,7 +164,20 @@ class EventItemListScreenState extends State<EventItemListScreen> {
           body: SafeArea(
             child: Padding(
               padding: const .all(16),
-              child: Column(children: [const Text("Event List")]),
+              child: Column(
+                children: [
+                  EventCardListTile(
+                    color: Colors.blue,
+                    title: "Event",
+                    subtitle: "Content",
+                  ),
+                  EventCardListTile(
+                    color: Colors.purple,
+                    title: "Event 2",
+                    subtitle: "Content",
+                  ),
+                ],
+              ),
             ),
           ),
           floatingActionButton: isLargeScreen
@@ -176,6 +190,102 @@ class EventItemListScreenState extends State<EventItemListScreen> {
                 ),
         );
       },
+    );
+  }
+}
+
+class EventCardListTile extends StatefulWidget {
+  final Color color;
+  final String title;
+  final String subtitle;
+
+  const EventCardListTile({
+    super.key,
+    required this.color,
+    required this.title,
+    required this.subtitle,
+  });
+
+  @override
+  State<EventCardListTile> createState() => EventCardListTileState();
+}
+
+class EventCardListTileState extends State<EventCardListTile> {
+  final FocusNode _childFocusNode = FocusNode(debugLabel: "Menu Button");
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: ListTile(
+        onTap: () {},
+        leading: Container(
+          width: 20,
+          height: 20,
+          decoration: BoxDecoration(
+            borderRadius: .circular(999),
+            color: widget.color,
+          ),
+        ),
+        title: Text(widget.title),
+        subtitle: Text(widget.subtitle),
+        trailing: MenuAnchor(
+          childFocusNode: _childFocusNode,
+          menuChildren: [
+            MenuItemButton(
+              onPressed: () {},
+              leadingIcon: const Icon(Icons.edit_outlined),
+              child: const Text("Edit"),
+            ),
+            MenuItemButton(
+              onPressed: () {
+                showDialog<void>(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: const Text("Confirm Event Deletion"),
+                      content: const Text(
+                        "Are you sure you want to delete this Event?",
+                      ),
+                      actions: [
+                        OutlinedButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Text("Cancel"),
+                        ),
+                        FilledButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: const Text("Event deleted.")),
+                            );
+                          },
+                          child: const Text("Delete Event"),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+              leadingIcon: const Icon(Icons.delete_outline),
+              child: const Text("Delete"),
+            ),
+          ],
+          builder: (context, controller, child) {
+            return IconButton(
+              focusNode: _childFocusNode,
+              onPressed: () {
+                if (controller.isOpen) {
+                  controller.close();
+                } else {
+                  controller.open();
+                }
+              },
+              icon: const Icon(Icons.more_vert),
+            );
+          },
+        ),
+      ),
     );
   }
 }
