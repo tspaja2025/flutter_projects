@@ -1,5 +1,4 @@
 import "package:flutter/material.dart";
-import "package:flutter_projects/widgets/app_bar_actions_widget.dart";
 
 class InvoiceManagerScreen extends StatefulWidget {
   const InvoiceManagerScreen({super.key});
@@ -21,8 +20,6 @@ class InvoiceManagerScreenState extends State<InvoiceManagerScreen> {
           appBar: AppBar(
             title: const Text("Invoice Manager"),
             centerTitle: true,
-            actionsPadding: const .only(right: 8),
-            actions: isLargeScreen ? null : [AppBarActionsWidget()],
           ),
           body: SafeArea(
             child: Padding(
@@ -268,8 +265,6 @@ class CreateNewInvoiceScreenState extends State<CreateNewInvoiceScreen> {
           appBar: AppBar(
             title: const Text("Create New Invoice"),
             centerTitle: true,
-            actionsPadding: const .only(right: 8),
-            actions: isLargeScreen ? null : [AppBarActionsWidget()],
           ),
           body: SafeArea(
             child: Padding(
@@ -602,8 +597,6 @@ class PreviewInvoiceScreenState extends State<PreviewInvoiceScreen> {
           appBar: AppBar(
             title: const Text("Preview Invoice"),
             centerTitle: true,
-            actionsPadding: const .only(right: 8),
-            actions: isLargeScreen ? null : [AppBarActionsWidget()],
           ),
           body: SafeArea(
             child: Padding(

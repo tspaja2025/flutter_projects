@@ -1,5 +1,4 @@
 import "package:flutter/material.dart";
-import "package:flutter_projects/widgets/app_bar_actions_widget.dart";
 import "package:flutter_projects/widgets/folder_card_widget.dart";
 
 class FileManagerScreen extends StatelessWidget {
@@ -12,12 +11,7 @@ class FileManagerScreen extends StatelessWidget {
         final bool isLargeScreen = constraints.maxWidth >= 720;
 
         return Scaffold(
-          appBar: AppBar(
-            title: const Text("File Manager"),
-            centerTitle: true,
-            actionsPadding: const .only(right: 8),
-            actions: isLargeScreen ? null : [AppBarActionsWidget()],
-          ),
+          appBar: AppBar(title: const Text("File Manager"), centerTitle: true),
           body: SafeArea(
             child: Padding(
               padding: const .all(16),
@@ -130,12 +124,7 @@ class ImageFolderScreen extends StatelessWidget {
         final bool isLargeScreen = constraints.maxWidth >= 720;
 
         return Scaffold(
-          appBar: AppBar(
-            title: const Text("Images Folder"),
-            centerTitle: true,
-            actionsPadding: const .only(right: 8),
-            actions: isLargeScreen ? null : [AppBarActionsWidget()],
-          ),
+          appBar: AppBar(title: const Text("Images Folder"), centerTitle: true),
           body: SafeArea(
             child: Padding(
               padding: const .all(16),

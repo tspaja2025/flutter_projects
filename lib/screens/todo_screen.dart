@@ -1,5 +1,4 @@
 import "package:flutter/material.dart";
-import "package:flutter_projects/widgets/app_bar_actions_widget.dart";
 
 class TodoScreen extends StatefulWidget {
   const TodoScreen({super.key});
@@ -18,12 +17,7 @@ class TodoScreenState extends State<TodoScreen> {
         final bool isLargeScreen = constraints.maxWidth >= 720;
 
         return Scaffold(
-          appBar: AppBar(
-            title: const Text("To Do"),
-            centerTitle: true,
-            actionsPadding: const .only(right: 8),
-            actions: isLargeScreen ? null : [AppBarActionsWidget()],
-          ),
+          appBar: AppBar(title: const Text("To Do"), centerTitle: true),
           body: SafeArea(
             child: Padding(
               padding: const .all(16),

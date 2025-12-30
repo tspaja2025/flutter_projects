@@ -1,5 +1,4 @@
 import "package:flutter/material.dart";
-import "package:flutter_projects/widgets/app_bar_actions_widget.dart";
 
 class KanbanBoardScreen extends StatelessWidget {
   const KanbanBoardScreen({super.key});
@@ -11,12 +10,7 @@ class KanbanBoardScreen extends StatelessWidget {
         final bool isLargeScreen = constraints.maxWidth >= 720;
 
         return Scaffold(
-          appBar: AppBar(
-            title: const Text("Kanban Board"),
-            centerTitle: true,
-            actionsPadding: const .only(right: 8),
-            actions: isLargeScreen ? null : [AppBarActionsWidget()],
-          ),
+          appBar: AppBar(title: const Text("Kanban Board"), centerTitle: true),
           body: SafeArea(
             child: Padding(
               padding: const .all(16),

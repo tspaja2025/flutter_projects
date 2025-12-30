@@ -1,6 +1,5 @@
 import "package:flex_color_picker/flex_color_picker.dart";
 import "package:flutter/material.dart";
-import "package:flutter_projects/widgets/app_bar_actions_widget.dart";
 import "package:qr_flutter/qr_flutter.dart";
 
 class QrGeneratorScreen extends StatefulWidget {
@@ -60,12 +59,7 @@ class QrGeneratorScreenState extends State<QrGeneratorScreen> {
         final bool isLargeScreen = constraints.maxWidth >= 720;
 
         return Scaffold(
-          appBar: AppBar(
-            title: const Text("QR Generator"),
-            centerTitle: true,
-            actionsPadding: const .only(right: 8),
-            actions: isLargeScreen ? null : [AppBarActionsWidget()],
-          ),
+          appBar: AppBar(title: const Text("QR Generator"), centerTitle: true),
           body: SafeArea(
             child: Padding(
               padding: const .all(16),
@@ -201,12 +195,7 @@ class GeneratedQrScreenState extends State<GeneratedQrScreen> {
         final bool isLargeScreen = constraints.maxWidth >= 720;
 
         return Scaffold(
-          appBar: AppBar(
-            title: const Text("Generated QR"),
-            centerTitle: true,
-            actionsPadding: const .only(right: 8),
-            actions: isLargeScreen ? null : [AppBarActionsWidget()],
-          ),
+          appBar: AppBar(title: const Text("Generated QR"), centerTitle: true),
           body: SafeArea(
             child: Padding(
               padding: const .all(16),

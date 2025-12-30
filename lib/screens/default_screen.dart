@@ -10,7 +10,6 @@ import "package:flutter_projects/screens/mail_screen.dart";
 import "package:flutter_projects/screens/note_taker_screen.dart";
 import "package:flutter_projects/screens/qr_generator_screen.dart";
 import "package:flutter_projects/screens/todo_screen.dart";
-import "package:flutter_projects/widgets/app_bar_actions_widget.dart";
 import "package:flutter_projects/widgets/card_list_tile_widget.dart";
 
 class DefaultScreen extends StatefulWidget {
@@ -25,14 +24,10 @@ class DefaultScreenState extends State<DefaultScreen> {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final bool isLargeScreen = constraints.maxWidth >= 720;
-
         return Scaffold(
           appBar: AppBar(
             title: const Text("Flutter Projects"),
             centerTitle: true,
-            actionsPadding: const .only(right: 8),
-            actions: isLargeScreen ? null : [AppBarActionsWidget()],
           ),
           body: SafeArea(
             child: Padding(

@@ -1,5 +1,4 @@
 import "package:flutter/material.dart";
-import "package:flutter_projects/widgets/app_bar_actions_widget.dart";
 
 class MailScreen extends StatelessWidget {
   const MailScreen({super.key});
@@ -11,12 +10,7 @@ class MailScreen extends StatelessWidget {
         final bool isLargeScreen = constraints.maxWidth >= 720;
 
         return Scaffold(
-          appBar: AppBar(
-            title: const Text("Mail"),
-            centerTitle: true,
-            actionsPadding: const .only(right: 8),
-            actions: isLargeScreen ? null : [AppBarActionsWidget()],
-          ),
+          appBar: AppBar(title: const Text("Mail"), centerTitle: true),
           body: SafeArea(
             child: Padding(
               padding: const .all(16),
@@ -113,12 +107,7 @@ class InboxScreen extends StatelessWidget {
         final bool isLargeScreen = constraints.maxWidth >= 720;
 
         return Scaffold(
-          appBar: AppBar(
-            title: const Text("Inbox"),
-            centerTitle: true,
-            actionsPadding: const .only(right: 8),
-            actions: isLargeScreen ? null : [AppBarActionsWidget()],
-          ),
+          appBar: AppBar(title: const Text("Inbox"), centerTitle: true),
           body: SafeArea(
             child: Padding(
               padding: const .all(16),
@@ -182,8 +171,6 @@ class EmailViewScreen extends StatelessWidget {
           appBar: AppBar(
             title: const Text("[Repository] New pull request submitted"),
             centerTitle: true,
-            actionsPadding: const .only(right: 8),
-            actions: isLargeScreen ? null : [AppBarActionsWidget()],
           ),
           body: SafeArea(
             child: Padding(

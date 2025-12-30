@@ -1,5 +1,4 @@
 import "package:flutter/material.dart";
-import "package:flutter_projects/widgets/app_bar_actions_widget.dart";
 
 class ApiKeysScreen extends StatefulWidget {
   const ApiKeysScreen({super.key});
@@ -18,12 +17,7 @@ class ApiKeysScreenState extends State<ApiKeysScreen> {
         final bool isLargeScreen = constraints.maxWidth >= 720;
 
         return Scaffold(
-          appBar: AppBar(
-            title: const Text("API Keys"),
-            centerTitle: true,
-            actionsPadding: const .only(right: 8),
-            actions: isLargeScreen ? null : [AppBarActionsWidget()],
-          ),
+          appBar: AppBar(title: const Text("API Keys"), centerTitle: true),
           body: SafeArea(
             child: Padding(
               padding: const .all(16),
@@ -184,8 +178,6 @@ class CreateApiKeyScreenState extends State<CreateApiKeyScreen> {
           appBar: AppBar(
             title: const Text("Create New API Key"),
             centerTitle: true,
-            actionsPadding: const .only(right: 8),
-            actions: isLargeScreen ? null : [AppBarActionsWidget()],
           ),
           body: SafeArea(
             child: Padding(

@@ -1,6 +1,5 @@
 import "package:flex_color_picker/flex_color_picker.dart";
 import "package:flutter/material.dart";
-import "package:flutter_projects/widgets/app_bar_actions_widget.dart";
 
 class EventCalendarScreen extends StatefulWidget {
   const EventCalendarScreen({super.key});
@@ -20,8 +19,6 @@ class EventCalendarScreenState extends State<EventCalendarScreen> {
           appBar: AppBar(
             title: const Text("Event Calendar"),
             centerTitle: true,
-            actionsPadding: const .only(right: 8),
-            actions: isLargeScreen ? null : [AppBarActionsWidget()],
           ),
           body: SafeArea(
             child: Padding(
@@ -163,12 +160,7 @@ class EventItemListScreenState extends State<EventItemListScreen> {
         final bool isLargeScreen = constraints.maxWidth >= 720;
 
         return Scaffold(
-          appBar: AppBar(
-            title: const Text("Event List"),
-            centerTitle: true,
-            actionsPadding: const .only(right: 8),
-            actions: isLargeScreen ? null : [AppBarActionsWidget()],
-          ),
+          appBar: AppBar(title: const Text("Event List"), centerTitle: true),
           body: SafeArea(
             child: Padding(
               padding: const .all(16),
@@ -234,8 +226,6 @@ class CreateNewEventScreenState extends State<CreateNewEventScreen> {
           appBar: AppBar(
             title: const Text("Create New Event"),
             centerTitle: true,
-            actionsPadding: const .only(right: 8),
-            actions: isLargeScreen ? null : [AppBarActionsWidget()],
           ),
           body: SafeArea(
             child: Padding(

@@ -1,6 +1,5 @@
 import "package:flex_color_picker/flex_color_picker.dart";
 import "package:flutter/material.dart";
-import "package:flutter_projects/widgets/app_bar_actions_widget.dart";
 
 class NoteTakerScreen extends StatefulWidget {
   const NoteTakerScreen({super.key});
@@ -24,12 +23,7 @@ class NoteTakerScreenState extends State<NoteTakerScreen> {
         final bool isLargeScreen = constraints.maxWidth >= 720;
 
         return Scaffold(
-          appBar: AppBar(
-            title: const Text("Note Taker"),
-            centerTitle: true,
-            actionsPadding: const .only(right: 8),
-            actions: isLargeScreen ? null : [AppBarActionsWidget()],
-          ),
+          appBar: AppBar(title: const Text("Note Taker"), centerTitle: true),
           body: SafeArea(
             child: Padding(
               padding: const .all(16),
@@ -385,12 +379,7 @@ class NewNoteScreenState extends State<NewNoteScreen> {
         final bool isLargeScreen = constraints.maxWidth >= 720;
 
         return Scaffold(
-          appBar: AppBar(
-            title: const Text("New Note"),
-            centerTitle: true,
-            actionsPadding: const .only(right: 8),
-            actions: isLargeScreen ? null : [AppBarActionsWidget()],
-          ),
+          appBar: AppBar(title: const Text("New Note"), centerTitle: true),
           body: SafeArea(
             child: Padding(
               padding: const .all(16),
@@ -515,12 +504,7 @@ class NewCategoryScreenState extends State<NewCategoryScreen> {
         final bool isLargeScreen = constraints.maxWidth >= 720;
 
         return Scaffold(
-          appBar: AppBar(
-            title: const Text("New Category"),
-            centerTitle: true,
-            actionsPadding: const .only(right: 8),
-            actions: isLargeScreen ? null : [AppBarActionsWidget()],
-          ),
+          appBar: AppBar(title: const Text("New Category"), centerTitle: true),
           body: SafeArea(
             child: Padding(
               padding: const .all(16),
