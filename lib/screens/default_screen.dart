@@ -11,7 +11,7 @@ import "package:flutter_projects/screens/note_taker_screen.dart";
 import "package:flutter_projects/screens/qr_generator_screen.dart";
 import "package:flutter_projects/screens/todo_screen.dart";
 import "package:flutter_projects/widgets/app_bar_actions_widget.dart";
-// import "package:flutter_projects/widgets/project_card_widget.dart";
+import "package:flutter_projects/widgets/card_list_tile_widget.dart";
 
 class DefaultScreen extends StatefulWidget {
   const DefaultScreen({super.key});
@@ -225,35 +225,6 @@ class DefaultScreenState extends State<DefaultScreen> {
           ),
         );
       },
-    );
-  }
-}
-
-class CardListTile extends StatelessWidget {
-  final VoidCallback onTap;
-  final IconData icon;
-  final String title;
-  final String subtitle;
-
-  const CardListTile({
-    super.key,
-    required this.onTap,
-    required this.icon,
-    required this.title,
-    required this.subtitle,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: Card(
-        child: ListTile(
-          onTap: onTap,
-          leading: Icon(icon),
-          title: Text(title),
-          subtitle: Text(subtitle),
-        ),
-      ),
     );
   }
 }
