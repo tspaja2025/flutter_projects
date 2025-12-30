@@ -1,4 +1,3 @@
-import "package:flex_color_picker/flex_color_picker.dart";
 import "package:flutter/material.dart";
 
 class EventCalendarScreen extends StatefulWidget {
@@ -181,6 +180,15 @@ class EventItemListScreenState extends State<EventItemListScreen> {
   }
 }
 
+const List<String> colorList = <String>[
+  "Blue",
+  "Green",
+  "Red",
+  "Yellow",
+  "Purple",
+  "Orange",
+];
+
 class CreateNewEventScreen extends StatefulWidget {
   const CreateNewEventScreen({super.key});
 
@@ -190,9 +198,12 @@ class CreateNewEventScreen extends StatefulWidget {
 
 class CreateNewEventScreenState extends State<CreateNewEventScreen> {
   DateTime? _selectedDate;
-  Color _eventColor = Colors.blue;
+  TimeOfDay? _selectedTime;
+  bool allDay = false;
 
-  Future<void> _selectDate() async {
+  final String _colorValue = colorList.first;
+
+  Future<void> _openStartDate() async {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: DateTime(2025, 12, 26),
@@ -205,15 +216,39 @@ class CreateNewEventScreenState extends State<CreateNewEventScreen> {
     });
   }
 
-  Future<void> _openColorPicker() async {
-    bool pickedColor = await ColorPicker(
-      color: _eventColor,
-      onColorChanged: (Color color) {
-        setState(() {
-          _eventColor = color;
-        });
-      },
-    ).showPickerDialog(context);
+  Future<void> _openStartTime() async {
+    final TimeOfDay? pickedTime = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+
+    setState(() {
+      _selectedTime = pickedTime;
+    });
+  }
+
+  Future<void> _openEndDate() async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime(2025, 12, 26),
+      firstDate: DateTime(2025),
+      lastDate: DateTime(2026),
+    );
+
+    setState(() {
+      _selectedDate = pickedDate;
+    });
+  }
+
+  Future<void> _openEndTime() async {
+    final TimeOfDay? pickedTime = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+
+    setState(() {
+      _selectedTime = pickedTime;
+    });
   }
 
   @override
@@ -233,41 +268,120 @@ class CreateNewEventScreenState extends State<CreateNewEventScreen> {
               child: Column(
                 crossAxisAlignment: .end,
                 children: [
-                  TextField(
-                    decoration: InputDecoration(
-                      label: const Text("Event Title"),
-                      floatingLabelBehavior: .always,
-                      border: OutlineInputBorder(),
+                  Center(
+                    child: SizedBox(
+                      width: 312,
+                      child: Card(
+                        child: Padding(
+                          padding: const .all(16),
+                          child: Column(
+                            crossAxisAlignment: .start,
+                            children: [
+                              TextField(
+                                decoration: InputDecoration(
+                                  label: const Text("Event Title"),
+                                  floatingLabelBehavior: .always,
+                                  border: OutlineInputBorder(),
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+                              TextField(
+                                decoration: InputDecoration(
+                                  label: const Text("Description"),
+                                  floatingLabelBehavior: .always,
+                                  border: OutlineInputBorder(),
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+                              DropdownMenu(
+                                width: 312,
+                                initialSelection: _colorValue,
+                                label: const Text("Color"),
+                                dropdownMenuEntries: [
+                                  DropdownMenuEntry(
+                                    value: "Blue",
+                                    label: "Blue",
+                                  ),
+                                  DropdownMenuEntry(
+                                    value: "Green",
+                                    label: "Green",
+                                  ),
+                                  DropdownMenuEntry(value: "Red", label: "Red"),
+                                  DropdownMenuEntry(
+                                    value: "Yellow",
+                                    label: "Yellow",
+                                  ),
+                                  DropdownMenuEntry(
+                                    value: "Purple",
+                                    label: "Purple",
+                                  ),
+                                  DropdownMenuEntry(
+                                    value: "Orange",
+                                    label: "Orange",
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 16),
+                              SwitchListTile(
+                                value: allDay,
+                                onChanged: (bool value) {
+                                  setState(() {
+                                    allDay = value;
+                                  });
+                                },
+                                title: const Text("All Day"),
+                              ),
+                              const SizedBox(height: 16),
+                              Row(
+                                mainAxisAlignment: !allDay
+                                    ? .spaceEvenly
+                                    : .start,
+                                children: [
+                                  OutlinedButton(
+                                    onPressed: _openStartDate,
+                                    child: const Text("Start Date"),
+                                  ),
+                                  if (!allDay)
+                                    OutlinedButton(
+                                      onPressed: _openStartTime,
+                                      child: const Text("Start time"),
+                                    ),
+                                ],
+                              ),
+                              const SizedBox(height: 16),
+                              Row(
+                                mainAxisAlignment: !allDay
+                                    ? .spaceEvenly
+                                    : .start,
+                                children: [
+                                  OutlinedButton(
+                                    onPressed: _openEndDate,
+                                    child: const Text("End Date"),
+                                  ),
+                                  if (!allDay)
+                                    OutlinedButton(
+                                      onPressed: _openEndTime,
+                                      child: const Text("End time"),
+                                    ),
+                                ],
+                              ),
+                              const SizedBox(height: 16),
+                              Row(
+                                mainAxisAlignment: .end,
+                                children: [
+                                  FilledButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text("Save Event"),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    children: [
-                      OutlinedButton(
-                        onPressed: _selectDate,
-                        child: const Text("Select Start Date"),
-                      ),
-                      OutlinedButton(
-                        onPressed: _selectDate,
-                        child: const Text("Select End Date"),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    children: [
-                      OutlinedButton(
-                        onPressed: _openColorPicker,
-                        child: const Text("Pick a Color"),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  FilledButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Text("Save Event"),
                   ),
                 ],
               ),
