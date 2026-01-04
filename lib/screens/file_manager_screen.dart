@@ -17,51 +17,73 @@ class FileManagerScreen extends StatelessWidget {
               padding: const .all(16),
               child: Column(
                 children: [
-                  FolderCard(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const ImageFolderScreen(),
+                  SizedBox(
+                    width: 312,
+                    height: 200,
+                    child: Card(
+                      child: Padding(
+                        padding: const .all(16),
+                        child: Column(
+                          children: [const Text("Internal Storage")],
                         ),
-                      );
-                    },
-                    icon: Icons.image_outlined,
-                    title: "Images",
+                      ),
+                    ),
                   ),
-                  FolderCard(
-                    onTap: () {},
-                    icon: Icons.video_file_outlined,
-                    title: "Videos",
+                  Row(
+                    mainAxisAlignment: .center,
+                    children: [
+                      FolderCard(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const ImageFolderScreen(),
+                            ),
+                          );
+                        },
+                        icon: Icons.image_outlined,
+                        title: "Image",
+                      ),
+                      FolderCard(
+                        onTap: () {},
+                        icon: Icons.video_file_outlined,
+                        title: "Video",
+                      ),
+                      FolderCard(
+                        onTap: () {},
+                        icon: Icons.music_note_outlined,
+                        title: "Music",
+                      ),
+                      FolderCard(
+                        onTap: () {},
+                        icon: Icons.archive_outlined,
+                        title: "Document",
+                      ),
+                    ],
                   ),
-                  FolderCard(
-                    onTap: () {},
-                    icon: Icons.music_note_outlined,
-                    title: "Sound",
-                  ),
-                  FolderCard(
-                    onTap: () {},
-                    icon: Icons.archive_outlined,
-                    title: "Documents",
-                  ),
-                  FolderCard(
-                    onTap: () {},
-                    icon: Icons.download_outlined,
-                    title: "Downloads",
-                  ),
-                  FolderCard(
-                    onTap: () {},
-                    icon: Icons.install_desktop,
-                    title: "Installer files",
-                  ),
-                  FolderCard(
-                    onTap: () {},
-                    icon: Icons.folder_zip_outlined,
-                    title: "Compressed",
-                  ),
-                  FolderCard(
-                    onTap: () {},
-                    icon: Icons.star_outline,
-                    title: "Favorites",
+                  Row(
+                    mainAxisAlignment: .center,
+                    children: [
+                      FolderCard(
+                        onTap: () {},
+                        icon: Icons.install_desktop,
+                        title: "APK",
+                      ),
+                      FolderCard(
+                        onTap: () {},
+                        icon: Icons.folder_zip_outlined,
+                        title: "Zip File",
+                      ),
+                      FolderCard(
+                        onTap: () {},
+                        icon: Icons.download_outlined,
+                        title: "Download",
+                      ),
+                      FolderCard(
+                        onTap: () {},
+                        icon: Icons.cloud_outlined,
+                        title: "Cloud",
+                      ),
+                    ],
                   ),
                 ],
               ),

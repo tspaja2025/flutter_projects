@@ -14,12 +14,18 @@ class FolderCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: ListTile(
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
         onTap: onTap,
-        leading: Icon(icon),
-        title: Text(title, style: TextTheme.of(context).titleMedium),
-        trailing: const Icon(Icons.arrow_right),
+        child: Column(
+          children: [
+            Card(
+              child: Padding(padding: const .all(16), child: Icon(icon)),
+            ),
+            Text(title, style: TextTheme.of(context).titleMedium),
+          ],
+        ),
       ),
     );
   }
