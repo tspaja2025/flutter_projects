@@ -1,9 +1,13 @@
 import "package:flutter/material.dart";
-import "package:flutter_projects/widgets/folder_card_widget.dart";
 
-class FileManagerScreen extends StatelessWidget {
+class FileManagerScreen extends StatefulWidget {
   const FileManagerScreen({super.key});
 
+  @override
+  State<FileManagerScreen> createState() => FileManagerScreenState();
+}
+
+class FileManagerScreenState extends State<FileManagerScreen> {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -17,235 +21,284 @@ class FileManagerScreen extends StatelessWidget {
               padding: const .all(16),
               child: Column(
                 children: [
-                  SizedBox(
-                    width: 312,
-                    height: 200,
-                    child: Card(
-                      child: Padding(
-                        padding: const .all(16),
-                        child: Column(
-                          children: [const Text("Internal Storage")],
-                        ),
-                      ),
-                    ),
-                  ),
                   Row(
-                    mainAxisAlignment: .center,
                     children: [
-                      FolderCard(
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => const ImageFolderScreen(),
-                            ),
-                          );
-                        },
-                        icon: Icons.image_outlined,
-                        title: "Image",
-                      ),
-                      FolderCard(
-                        onTap: () {},
-                        icon: Icons.video_file_outlined,
-                        title: "Video",
-                      ),
-                      FolderCard(
-                        onTap: () {},
-                        icon: Icons.music_note_outlined,
-                        title: "Music",
-                      ),
-                      FolderCard(
-                        onTap: () {},
-                        icon: Icons.archive_outlined,
-                        title: "Document",
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: .center,
-                    children: [
-                      FolderCard(
-                        onTap: () {},
-                        icon: Icons.install_desktop,
-                        title: "APK",
-                      ),
-                      FolderCard(
-                        onTap: () {},
-                        icon: Icons.folder_zip_outlined,
-                        title: "Zip File",
-                      ),
-                      FolderCard(
-                        onTap: () {},
-                        icon: Icons.download_outlined,
-                        title: "Download",
-                      ),
-                      FolderCard(
-                        onTap: () {},
-                        icon: Icons.cloud_outlined,
-                        title: "Cloud",
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    title: const Text("Upload"),
-                    content: Column(
-                      mainAxisSize: .min,
-                      children: [
-                        TextField(
+                      SizedBox(
+                        width: 200,
+                        child: TextField(
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
-                            hintText: "Choose file",
+                            hintText: "Search files...",
                           ),
                         ),
-                      ],
-                    ),
-                    actions: [
-                      OutlinedButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        child: const Text("Cancel"),
                       ),
-                      FilledButton(
-                        onPressed: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: const Text("File Uploaded")),
+                      const Spacer(),
+                      MenuAnchor(
+                        menuChildren: [
+                          MenuItemButton(
+                            onPressed: () {},
+                            leadingIcon: const Icon(Icons.add),
+                            child: const Text("New Folder"),
+                          ),
+                          MenuItemButton(
+                            onPressed: () {},
+                            leadingIcon: const Icon(Icons.upload_outlined),
+                            child: const Text("Upload Files"),
+                          ),
+                        ],
+                        builder: (context, controller, child) {
+                          return FilledButton(
+                            onPressed: () {
+                              controller.isOpen
+                                  ? controller.close()
+                                  : controller.open();
+                            },
+                            child: const Text("Add"),
                           );
-                          Navigator.pop(context);
                         },
-                        child: const Text("Upload"),
                       ),
                     ],
-                  );
-                },
-              );
-            },
-            child: const Icon(Icons.upload_outlined),
-          ),
-        );
-      },
-    );
-  }
-}
+                  ),
 
-class ImageFolderScreen extends StatelessWidget {
-  const ImageFolderScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final bool isLargeScreen = constraints.maxWidth >= 720;
-
-        return Scaffold(
-          appBar: AppBar(title: const Text("Images Folder"), centerTitle: true),
-          body: SafeArea(
-            child: Padding(
-              padding: const .all(16),
-              child: Column(
-                children: [
-                  Expanded(
-                    child: LayoutBuilder(
-                      builder: (context, constraints) {
-                        return GridView.builder(
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 8,
-                                crossAxisSpacing: 8,
-                                mainAxisSpacing: 8,
+                  Card(
+                    child: Padding(
+                      padding: const .all(16),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              const Text(
+                                "Recently Uploaded Files",
+                                style: TextStyle(fontWeight: .bold),
                               ),
-                          itemCount: 32,
-                          itemBuilder: (context, index) {
-                            return ImagePreview(
-                              imageSource: 'https://placehold.co/145/png',
-                            );
-                          },
-                        );
-                      },
+                              const Spacer(),
+                              OutlinedButton.icon(
+                                onPressed: () {},
+                                icon: const Icon(Icons.arrow_forward),
+                                iconAlignment: .end,
+                                label: const Text("View All"),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 16),
+                          Table(
+                            children: [
+                              // Header
+                              TableRow(
+                                children: [
+                                  TableCell(child: const Text("Name")),
+                                  TableCell(child: const Text("Size")),
+                                  TableCell(child: const Text("Upload Date")),
+                                  TableCell(child: const Text("Actions")),
+                                ],
+                              ),
+
+                              // Body
+                              TableRow(
+                                children: [
+                                  TableCell(
+                                    child: const Text("project-proposal.docx"),
+                                  ),
+                                  TableCell(child: const Text("2.38 MB")),
+                                  TableCell(child: const Text("Jan 5, 2026")),
+                                  TableCell(
+                                    child: MenuAnchor(
+                                      menuChildren: [
+                                        MenuItemButton(
+                                          onPressed: () {},
+                                          leadingIcon: const Icon(
+                                            Icons.download_outlined,
+                                          ),
+                                          child: const Text("Download"),
+                                        ),
+                                        MenuItemButton(
+                                          onPressed: () {},
+                                          leadingIcon: const Icon(
+                                            Icons.delete_outline,
+                                          ),
+                                          child: const Text("Delete"),
+                                        ),
+                                      ],
+                                      builder: (context, controller, child) {
+                                        return IconButton(
+                                          onPressed: () {
+                                            controller.isOpen
+                                                ? controller.close()
+                                                : controller.open();
+                                          },
+                                          icon: const Icon(Icons.more_vert),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              TableRow(
+                                children: [
+                                  TableCell(
+                                    child: const Text("company-logo.png"),
+                                  ),
+                                  TableCell(child: const Text("1.14 MB")),
+                                  TableCell(child: const Text("Jan 5, 2026")),
+                                  TableCell(
+                                    child: MenuAnchor(
+                                      menuChildren: [
+                                        MenuItemButton(
+                                          onPressed: () {},
+                                          leadingIcon: const Icon(
+                                            Icons.download_outlined,
+                                          ),
+                                          child: const Text("Download"),
+                                        ),
+                                        MenuItemButton(
+                                          onPressed: () {},
+                                          leadingIcon: const Icon(
+                                            Icons.delete_outline,
+                                          ),
+                                          child: const Text("Delete"),
+                                        ),
+                                      ],
+                                      builder: (context, controller, child) {
+                                        return IconButton(
+                                          onPressed: () {
+                                            controller.isOpen
+                                                ? controller.close()
+                                                : controller.open();
+                                          },
+                                          icon: const Icon(Icons.more_vert),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              TableRow(
+                                children: [
+                                  TableCell(
+                                    child: const Text("presentation.pptx"),
+                                  ),
+                                  TableCell(child: const Text("5.34 MB")),
+                                  TableCell(child: const Text("Jan 5, 2026")),
+                                  TableCell(
+                                    child: MenuAnchor(
+                                      menuChildren: [
+                                        MenuItemButton(
+                                          onPressed: () {},
+                                          leadingIcon: const Icon(
+                                            Icons.download_outlined,
+                                          ),
+                                          child: const Text("Download"),
+                                        ),
+                                        MenuItemButton(
+                                          onPressed: () {},
+                                          leadingIcon: const Icon(
+                                            Icons.delete_outline,
+                                          ),
+                                          child: const Text("Delete"),
+                                        ),
+                                      ],
+                                      builder: (context, controller, child) {
+                                        return IconButton(
+                                          onPressed: () {
+                                            controller.isOpen
+                                                ? controller.close()
+                                                : controller.open();
+                                          },
+                                          icon: const Icon(Icons.more_vert),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              TableRow(
+                                children: [
+                                  TableCell(child: const Text("budget.xlsx")),
+                                  TableCell(child: const Text("957.03 KB")),
+                                  TableCell(child: const Text("Jan 5, 2026")),
+                                  TableCell(
+                                    child: MenuAnchor(
+                                      menuChildren: [
+                                        MenuItemButton(
+                                          onPressed: () {},
+                                          leadingIcon: const Icon(
+                                            Icons.download_outlined,
+                                          ),
+                                          child: const Text("Download"),
+                                        ),
+                                        MenuItemButton(
+                                          onPressed: () {},
+                                          leadingIcon: const Icon(
+                                            Icons.delete_outline,
+                                          ),
+                                          child: const Text("Delete"),
+                                        ),
+                                      ],
+                                      builder: (context, controller, child) {
+                                        return IconButton(
+                                          onPressed: () {
+                                            controller.isOpen
+                                                ? controller.close()
+                                                : controller.open();
+                                          },
+                                          icon: const Icon(Icons.more_vert),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              TableRow(
+                                children: [
+                                  TableCell(
+                                    child: const Text("product-video.mp4"),
+                                  ),
+                                  TableCell(child: const Text("150.68 MB")),
+                                  TableCell(child: const Text("Jan 5, 2026")),
+                                  TableCell(
+                                    child: MenuAnchor(
+                                      menuChildren: [
+                                        MenuItemButton(
+                                          onPressed: () {},
+                                          leadingIcon: const Icon(
+                                            Icons.download_outlined,
+                                          ),
+                                          child: const Text("Download"),
+                                        ),
+                                        MenuItemButton(
+                                          onPressed: () {},
+                                          leadingIcon: const Icon(
+                                            Icons.delete_outline,
+                                          ),
+                                          child: const Text("Delete"),
+                                        ),
+                                      ],
+                                      builder: (context, controller, child) {
+                                        return IconButton(
+                                          onPressed: () {
+                                            controller.isOpen
+                                                ? controller.close()
+                                                : controller.open();
+                                          },
+                                          icon: const Icon(Icons.more_vert),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],
               ),
             ),
           ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    title: const Text("Upload"),
-                    content: Column(
-                      mainAxisSize: .min,
-                      children: [
-                        TextField(
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            hintText: "Choose file",
-                          ),
-                        ),
-                      ],
-                    ),
-                    actions: [
-                      OutlinedButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        child: const Text("Cancel"),
-                      ),
-                      FilledButton(
-                        onPressed: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: const Text("File Uploaded")),
-                          );
-                          Navigator.pop(context);
-                        },
-                        child: const Text("Upload"),
-                      ),
-                    ],
-                  );
-                },
-              );
-            },
-            child: const Icon(Icons.upload_outlined),
-          ),
         );
       },
-    );
-  }
-}
-
-class ImagePreview extends StatelessWidget {
-  final String imageSource;
-
-  const ImagePreview({super.key, required this.imageSource});
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Container(
-          alignment: .center,
-          child: Image(image: NetworkImage(imageSource)),
-        ),
-        Container(
-          alignment: .bottomCenter,
-          child: Text(
-            "image.png",
-            style: TextTheme.of(
-              context,
-            ).titleSmall?.copyWith(fontWeight: .bold, color: Colors.black),
-          ),
-        ),
-      ],
     );
   }
 }
