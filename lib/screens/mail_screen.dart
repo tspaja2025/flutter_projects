@@ -175,7 +175,53 @@ class EmailViewScreen extends StatelessWidget {
           body: SafeArea(
             child: Padding(
               padding: const .all(16),
-              child: Column(children: [const Text("Email View screen")]),
+              child: Column(
+                children: [
+                  Row(
+                    spacing: 8,
+                    children: [
+                      CircleAvatar(child: const Text("A")),
+                      Column(
+                        crossAxisAlignment: .start,
+                        children: [
+                          const Text("Github - notifications@github.com"),
+                          const Text("Today at 5:53"),
+                        ],
+                      ),
+                      const Spacer(),
+                      IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.reply_outlined),
+                      ),
+                      IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.reply_all_outlined),
+                      ),
+                      IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.forward_outlined),
+                      ),
+                      IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.star_outline),
+                      ),
+                      IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.archive_outlined),
+                      ),
+                      IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.delete_outline),
+                      ),
+                    ],
+                  ),
+                  const Divider(),
+                  const SizedBox(height: 16),
+                  const Text(
+                    "A new pull request has been submitted to your repository. Please review the changes when you have a moment. The changes include bug fixes and new features for the authentication module.",
+                  ),
+                ],
+              ),
             ),
           ),
         );
