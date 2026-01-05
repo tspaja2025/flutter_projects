@@ -19,159 +19,162 @@ class MiscellaniousScreenState extends State<MiscellaniousScreen> {
             child: Padding(
               padding: const .all(16),
               child: Center(
-                child: Column(
-                  children: [
-                    Text(
-                      "Miscellanious creations",
-                      style: TextTheme.of(context).titleLarge,
-                    ),
-                    const SizedBox(height: 16),
-                    // Carousel3D(),
-                    Row(
-                      mainAxisAlignment: .center,
-                      spacing: 16,
-                      children: [
-                        SizedBox(
-                          width: 250,
-                          height: 400,
-                          child: ProductPlanCards(
-                            color: Colors.red,
-                            title: "Basic",
-                            price: "\$2.99",
-                            children: [
-                              ProductPlanListItem(
-                                leadingIcon: const Icon(
-                                  Icons.check,
-                                  color: Colors.green,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Text(
+                        "Miscellanious creations",
+                        style: TextTheme.of(context).titleLarge,
+                      ),
+                      const SizedBox(height: 16),
+                      Carousel3D(),
+                      const SizedBox(height: 400),
+                      Row(
+                        mainAxisAlignment: .center,
+                        spacing: 16,
+                        children: [
+                          SizedBox(
+                            width: 250,
+                            height: 400,
+                            child: ProductPlanCards(
+                              color: Colors.red,
+                              title: "Basic",
+                              price: "\$2.99",
+                              children: [
+                                ProductPlanListItem(
+                                  leadingIcon: const Icon(
+                                    Icons.check,
+                                    color: Colors.green,
+                                  ),
+                                  title: "Sample Text Here",
                                 ),
-                                title: "Sample Text Here",
-                              ),
-                              ProductPlanListItem(
-                                leadingIcon: const Icon(
-                                  Icons.clear,
-                                  color: Colors.red,
+                                ProductPlanListItem(
+                                  leadingIcon: const Icon(
+                                    Icons.clear,
+                                    color: Colors.red,
+                                  ),
+                                  title: "Other Text Title",
                                 ),
-                                title: "Other Text Title",
-                              ),
-                              ProductPlanListItem(
-                                leadingIcon: const Icon(
-                                  Icons.clear,
-                                  color: Colors.red,
+                                ProductPlanListItem(
+                                  leadingIcon: const Icon(
+                                    Icons.clear,
+                                    color: Colors.red,
+                                  ),
+                                  title: "Text Space Goes Here",
                                 ),
-                                title: "Text Space Goes Here",
-                              ),
-                              ProductPlanListItem(
-                                leadingIcon: const Icon(
-                                  Icons.clear,
-                                  color: Colors.red,
+                                ProductPlanListItem(
+                                  leadingIcon: const Icon(
+                                    Icons.clear,
+                                    color: Colors.red,
+                                  ),
+                                  title: "Description Space",
                                 ),
-                                title: "Description Space",
-                              ),
-                              ProductPlanListItem(
-                                leadingIcon: const Icon(
-                                  Icons.clear,
-                                  color: Colors.red,
+                                ProductPlanListItem(
+                                  leadingIcon: const Icon(
+                                    Icons.clear,
+                                    color: Colors.red,
+                                  ),
+                                  title: "Sample Text Here",
                                 ),
-                                title: "Sample Text Here",
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          width: 250,
-                          height: 400,
-                          child: ProductPlanCards(
-                            color: Colors.blue,
-                            title: "Standard",
-                            price: "\$5.99",
-                            children: [
-                              ProductPlanListItem(
-                                leadingIcon: const Icon(
-                                  Icons.check,
-                                  color: Colors.green,
+                          SizedBox(
+                            width: 250,
+                            height: 400,
+                            child: ProductPlanCards(
+                              color: Colors.blue,
+                              title: "Standard",
+                              price: "\$5.99",
+                              children: [
+                                ProductPlanListItem(
+                                  leadingIcon: const Icon(
+                                    Icons.check,
+                                    color: Colors.green,
+                                  ),
+                                  title: "Sample Text Here",
                                 ),
-                                title: "Sample Text Here",
-                              ),
-                              ProductPlanListItem(
-                                leadingIcon: const Icon(
-                                  Icons.check,
-                                  color: Colors.green,
+                                ProductPlanListItem(
+                                  leadingIcon: const Icon(
+                                    Icons.check,
+                                    color: Colors.green,
+                                  ),
+                                  title: "Other Text Title",
                                 ),
-                                title: "Other Text Title",
-                              ),
-                              ProductPlanListItem(
-                                leadingIcon: const Icon(
-                                  Icons.check,
-                                  color: Colors.green,
+                                ProductPlanListItem(
+                                  leadingIcon: const Icon(
+                                    Icons.check,
+                                    color: Colors.green,
+                                  ),
+                                  title: "Text Space Goes Here",
                                 ),
-                                title: "Text Space Goes Here",
-                              ),
-                              ProductPlanListItem(
-                                leadingIcon: const Icon(
-                                  Icons.clear,
-                                  color: Colors.red,
+                                ProductPlanListItem(
+                                  leadingIcon: const Icon(
+                                    Icons.clear,
+                                    color: Colors.red,
+                                  ),
+                                  title: "Description Space",
                                 ),
-                                title: "Description Space",
-                              ),
-                              ProductPlanListItem(
-                                leadingIcon: const Icon(
-                                  Icons.clear,
-                                  color: Colors.red,
+                                ProductPlanListItem(
+                                  leadingIcon: const Icon(
+                                    Icons.clear,
+                                    color: Colors.red,
+                                  ),
+                                  title: "Sample Text Here",
                                 ),
-                                title: "Sample Text Here",
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          width: 250,
-                          height: 400,
-                          child: ProductPlanCards(
-                            color: Colors.teal,
-                            title: "Premium",
-                            price: "\$9.99",
-                            children: [
-                              ProductPlanListItem(
-                                leadingIcon: const Icon(
-                                  Icons.check,
-                                  color: Colors.green,
+                          SizedBox(
+                            width: 250,
+                            height: 400,
+                            child: ProductPlanCards(
+                              color: Colors.teal,
+                              title: "Premium",
+                              price: "\$9.99",
+                              children: [
+                                ProductPlanListItem(
+                                  leadingIcon: const Icon(
+                                    Icons.check,
+                                    color: Colors.green,
+                                  ),
+                                  title: "Sample Text Here",
                                 ),
-                                title: "Sample Text Here",
-                              ),
-                              ProductPlanListItem(
-                                leadingIcon: const Icon(
-                                  Icons.check,
-                                  color: Colors.green,
+                                ProductPlanListItem(
+                                  leadingIcon: const Icon(
+                                    Icons.check,
+                                    color: Colors.green,
+                                  ),
+                                  title: "Other Text Title",
                                 ),
-                                title: "Other Text Title",
-                              ),
-                              ProductPlanListItem(
-                                leadingIcon: const Icon(
-                                  Icons.check,
-                                  color: Colors.green,
+                                ProductPlanListItem(
+                                  leadingIcon: const Icon(
+                                    Icons.check,
+                                    color: Colors.green,
+                                  ),
+                                  title: "Text Space Goes Here",
                                 ),
-                                title: "Text Space Goes Here",
-                              ),
-                              ProductPlanListItem(
-                                leadingIcon: const Icon(
-                                  Icons.check,
-                                  color: Colors.green,
+                                ProductPlanListItem(
+                                  leadingIcon: const Icon(
+                                    Icons.check,
+                                    color: Colors.green,
+                                  ),
+                                  title: "Description Space",
                                 ),
-                                title: "Description Space",
-                              ),
-                              ProductPlanListItem(
-                                leadingIcon: const Icon(
-                                  Icons.check,
-                                  color: Colors.green,
+                                ProductPlanListItem(
+                                  leadingIcon: const Icon(
+                                    Icons.check,
+                                    color: Colors.green,
+                                  ),
+                                  title: "Sample Text Here",
                                 ),
-                                title: "Sample Text Here",
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
