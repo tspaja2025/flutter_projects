@@ -2,6 +2,8 @@ import "package:flex_color_picker/flex_color_picker.dart";
 import "package:flutter/material.dart";
 import "package:qr_flutter/qr_flutter.dart";
 
+// Add Logic
+
 class QrGeneratorScreen extends StatefulWidget {
   const QrGeneratorScreen({super.key});
 

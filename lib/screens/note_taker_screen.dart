@@ -1,6 +1,8 @@
 import "package:flex_color_picker/flex_color_picker.dart";
 import "package:flutter/material.dart";
 
+// Add Logic
+
 class NoteTakerScreen extends StatefulWidget {
   const NoteTakerScreen({super.key});
 
@@ -73,54 +75,58 @@ class NoteTakerScreenState extends State<NoteTakerScreen> {
               ),
             ),
           ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    title: const Text("What do you want to add?"),
-                    content: Column(
-                      mainAxisSize: .min,
-                      children: [
-                        ListTile(
-                          onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => const NewNoteScreen(),
+          floatingActionButton: isLargeScreen
+              ? null
+              : FloatingActionButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: const Text("What do you want to add?"),
+                          content: Column(
+                            mainAxisSize: .min,
+                            children: [
+                              ListTile(
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const NewNoteScreen(),
+                                    ),
+                                  );
+                                },
+                                leading: const Icon(Icons.note_outlined),
+                                title: const Text("New Note"),
                               ),
-                            );
-                          },
-                          leading: const Icon(Icons.note_outlined),
-                          title: const Text("New Note"),
-                        ),
-                        ListTile(
-                          onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => const NewCategoryScreen(),
+                              ListTile(
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const NewCategoryScreen(),
+                                    ),
+                                  );
+                                },
+                                leading: const Icon(Icons.category_outlined),
+                                title: const Text("New Category"),
                               ),
-                            );
-                          },
-                          leading: const Icon(Icons.category_outlined),
-                          title: const Text("New Category"),
-                        ),
-                      ],
-                    ),
-                    actions: [
-                      FilledButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        child: const Text("Cancel"),
-                      ),
-                    ],
-                  );
-                },
-              );
-            },
-            child: const Icon(Icons.add),
-          ),
+                            ],
+                          ),
+                          actions: [
+                            FilledButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Text("Cancel"),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                  child: const Icon(Icons.add),
+                ),
         );
       },
     );
