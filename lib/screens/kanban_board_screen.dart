@@ -1,9 +1,120 @@
 import "package:flutter/material.dart";
 
-// Add Logic
+// Missing Logic:
+// Edit Column
+// Edit Task
 
-class KanbanBoardScreen extends StatelessWidget {
+class KanbanBoardScreen extends StatefulWidget {
   const KanbanBoardScreen({super.key});
+
+  @override
+  State<KanbanBoardScreen> createState() => KanbanBoardScreenState();
+}
+
+class KanbanBoardScreenState extends State<KanbanBoardScreen> {
+  final List<KanbanColumnModel> columns = [
+    KanbanColumnModel(
+      id: "todo",
+      title: "To Do",
+      tasks: [
+        KanbanTask(
+          id: "1",
+          title: "Design System Setup",
+          content: "Create a comprehensive design system...",
+          date: "25/12/2025",
+          priority: "High",
+        ),
+        KanbanTask(
+          id: "2",
+          title: "API Integration",
+          content: "Integrate with backend APIs",
+          date: "25/12/2025",
+          priority: "Medium",
+        ),
+      ],
+    ),
+    KanbanColumnModel(
+      id: "progress",
+      title: "In Progress",
+      tasks: [
+        KanbanTask(
+          id: "3",
+          title: "User Authentication",
+          content: "Implement login & signup",
+          date: "25/12/2025",
+          priority: "High",
+        ),
+      ],
+    ),
+    KanbanColumnModel(
+      id: "review",
+      title: "Review",
+      tasks: [
+        KanbanTask(
+          id: "4",
+          title: "Mobile Responsiviness",
+          content: "Ensure the app works perfectly on mobile devices",
+          date: "25/12/2025",
+          priority: "Medium",
+        ),
+      ],
+    ),
+    KanbanColumnModel(
+      id: "done",
+      title: "Done",
+      tasks: [
+        KanbanTask(
+          id: "5",
+          title: "Project Setup",
+          content: "Initialize Flutter project.",
+          date: "25/12/2025",
+          priority: "Low",
+        ),
+      ],
+    ),
+  ];
+
+  void addColumn(String title) {
+    setState(() {
+      columns.add(
+        KanbanColumnModel(
+          id: DateTime.now().toString(),
+          title: title,
+          tasks: [],
+        ),
+      );
+    });
+  }
+
+  void deleteColumn(String columnId) {
+    setState(() {
+      columns.removeWhere((c) => c.id == columnId);
+    });
+  }
+
+  void addTask(String columnId) {
+    final column = columns.firstWhere((c) => c.id == columnId);
+
+    setState(() {
+      column.tasks.add(
+        KanbanTask(
+          id: DateTime.now().toString(),
+          title: "New Task",
+          content: "Task description",
+          date: "01/01/2026",
+          priority: "Low",
+        ),
+      );
+    });
+  }
+
+  void deleteTask(String columnId, String taskId) {
+    final column = columns.firstWhere((c) => c.id == columnId);
+
+    setState(() {
+      column.tasks.removeWhere((t) => t.id == taskId);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,81 +143,147 @@ class KanbanBoardScreen extends StatelessWidget {
                   const SizedBox(height: 16),
 
                   SingleChildScrollView(
-                    scrollDirection: .horizontal,
+                    scrollDirection: Axis.horizontal,
                     child: Row(
-                      crossAxisAlignment: .start,
-                      children: [
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width / 4,
-                          child: _buildKanbanColumn("To Do", "2", [
-                            _buildKanbanColumnItem(
-                              "Design System Setup",
-                              "Create a comprehensive design system with colors, typography, and components",
-                              "25/12/2025",
-                              "High",
-                            ),
-                            _buildKanbanColumnItem(
-                              "API Integration",
-                              "Integrate with backend APIs for data fetching",
-                              "25/12/2025",
-                              "Medium",
-                            ),
-                          ]),
-                        ),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width / 4,
-                          child: _buildKanbanColumn("In Progress", "1", [
-                            _buildKanbanColumnItem(
-                              "User Authentication",
-                              "Implement login and signup functionality",
-                              "25/12/2025",
-                              "High",
-                            ),
-                          ]),
-                        ),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width / 4,
-                          child: _buildKanbanColumn("Review", "1", [
-                            _buildKanbanColumnItem(
-                              "Mobile Responsiveness",
-                              "Ensure the app works perfectly on mobile devices",
-                              "25/12/2025",
-                              "Medium",
-                            ),
-                          ]),
-                        ),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width / 4,
-                          child: _buildKanbanColumn("Done", "1", [
-                            _buildKanbanColumnItem(
-                              "Project Setup",
-                              "Initialize Next.js project with TypeScript and Tailwind",
-                              "25/12/2025",
-                              "Low",
-                            ),
-                          ]),
-                        ),
-                      ],
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: columns.map((column) {
+                        return SizedBox(
+                          width: (MediaQuery.of(context).size.width - 32) / 4,
+                          child: KanbanColumn(
+                            title: column.title,
+                            itemCount: column.tasks.length.toString(),
+                            children: column.tasks.map((task) {
+                              return KanbanColumnItem(
+                                title: task.title,
+                                content: task.content,
+                                date: task.date,
+                                priority: task.priority,
+                                onDelete: () => deleteTask(column.id, task.id),
+                              );
+                            }).toList(),
+                            onAddTask: () => addTask(column.id),
+                            onDeleteColumn: () => deleteColumn(column.id),
+                          ),
+                        );
+                      }).toList(),
                     ),
                   ),
+
+                  // Row(
+                  //   crossAxisAlignment: .start,
+                  //   children: [
+                  //     SizedBox(
+                  //       width: (MediaQuery.of(context).size.width - 32) / 4,
+                  //       child: KanbanColumn(
+                  //         title: "To Do",
+                  //         itemCount: "2",
+                  //         children: [
+                  //           KanbanColumnItem(
+                  //             title: "Design System Setup",
+                  //             content:
+                  //                 "Create a comprehensive design system with colors, typography, and components",
+                  //             date: "25/12/2025",
+                  //             priority: "High",
+                  //           ),
+                  //           KanbanColumnItem(
+                  //             title: "API Integration",
+                  //             content:
+                  //                 "Integrate with backend APIs for data fetching",
+                  //             date: "25/12/2025",
+                  //             priority: "Medium",
+                  //           ),
+                  //         ],
+                  //       ),
+                  //     ),
+                  //     SizedBox(
+                  //       width: (MediaQuery.of(context).size.width - 32) / 4,
+                  //       child: KanbanColumn(
+                  //         title: "In Progress",
+                  //         itemCount: "1",
+                  //         children: [
+                  //           KanbanColumnItem(
+                  //             title: "User Authentication",
+                  //             content:
+                  //                 "Implement login and signup functionality",
+                  //             date: "25/12/2025",
+                  //             priority: "High",
+                  //           ),
+                  //         ],
+                  //       ),
+                  //     ),
+                  //     SizedBox(
+                  //       width: (MediaQuery.of(context).size.width - 32) / 4,
+                  //       child: KanbanColumn(
+                  //         title: "Review",
+                  //         itemCount: "1",
+                  //         children: [
+                  //           KanbanColumnItem(
+                  //             title: "Mobile Responsiveness",
+                  //             content:
+                  //                 "Ensure the app works perfectly on mobile devices",
+                  //             date: "25/12/2025",
+                  //             priority: "Medium",
+                  //           ),
+                  //         ],
+                  //       ),
+                  //     ),
+                  //     SizedBox(
+                  //       width: (MediaQuery.of(context).size.width - 32) / 4,
+                  //       child: KanbanColumn(
+                  //         title: "Done",
+                  //         itemCount: "1",
+                  //         children: [
+                  //           KanbanColumnItem(
+                  //             title: "Project Setup",
+                  //             content:
+                  //                 "Initialize Next.js project with TypeScript and Tailwind",
+                  //             date: "25/12/2025",
+                  //             priority: "Low",
+                  //           ),
+                  //         ],
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
                 ],
               ),
             ),
           ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {},
-            child: const Icon(Icons.add),
-          ),
+          floatingActionButton: isLargeScreen
+              ? null
+              : FloatingActionButton(
+                  onPressed: () {},
+                  child: const Icon(Icons.add),
+                ),
         );
       },
     );
   }
+}
 
-  Widget _buildKanbanColumn(
-    String title,
-    String itemCount,
-    List<Widget> children,
-  ) {
+class KanbanColumn extends StatefulWidget {
+  final String title;
+  final String itemCount;
+  final List<Widget> children;
+  final VoidCallback onAddTask;
+  final VoidCallback onDeleteColumn;
+
+  const KanbanColumn({
+    super.key,
+    required this.title,
+    required this.itemCount,
+    required this.children,
+    required this.onAddTask,
+    required this.onDeleteColumn,
+  });
+
+  @override
+  State<KanbanColumn> createState() => KanbanColumnState();
+}
+
+class KanbanColumnState extends State<KanbanColumn> {
+  @override
+  Widget build(BuildContext context) {
     return Card(
       child: Padding(
         padding: const .all(16),
@@ -115,55 +292,124 @@ class KanbanBoardScreen extends StatelessWidget {
             Row(
               spacing: 8,
               children: [
-                Text(title),
-                Chip(padding: const .all(2), label: Text(itemCount)),
+                Text(widget.title),
+                Chip(padding: const .all(2), label: Text(widget.itemCount)),
                 const Spacer(),
-                IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert)),
+                MenuAnchor(
+                  menuChildren: [
+                    MenuItemButton(
+                      onPressed: widget.onAddTask,
+                      child: const Text("New Task"),
+                    ),
+                    // MenuItemButton(
+                    //   onPressed: () {},
+                    //   child: const Text("Edit Column"),
+                    // ),
+                    MenuItemButton(
+                      onPressed: widget.onDeleteColumn,
+                      child: const Text("Delete Column"),
+                    ),
+                  ],
+                  builder: (context, controller, child) {
+                    return IconButton(
+                      onPressed: () {
+                        if (controller.isOpen) {
+                          controller.close();
+                        } else {
+                          controller.open();
+                        }
+                      },
+                      icon: const Icon(Icons.more_vert),
+                    );
+                  },
+                ),
               ],
             ),
             const SizedBox(height: 8),
-            ...children,
+            ...widget.children,
           ],
         ),
       ),
     );
   }
+}
 
-  Widget _buildKanbanColumnItem(
-    String title,
-    String content,
-    String date,
-    String priority,
-  ) {
+class KanbanColumnItem extends StatefulWidget {
+  final String title;
+  final String content;
+  final String date;
+  final String priority;
+  final VoidCallback onDelete;
+
+  const KanbanColumnItem({
+    super.key,
+    required this.title,
+    required this.content,
+    required this.date,
+    required this.priority,
+    required this.onDelete,
+  });
+
+  @override
+  State<KanbanColumnItem> createState() => KanbanColumnItemState();
+}
+
+class KanbanColumnItemState extends State<KanbanColumnItem> {
+  @override
+  Widget build(BuildContext context) {
     return Card.outlined(
       child: Padding(
         padding: const .all(16),
         child: Column(
+          crossAxisAlignment: .start,
           children: [
             Row(
-              mainAxisAlignment: .spaceBetween,
               children: [
-                Text(title),
-                IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert)),
+                Text(widget.title),
+                const Spacer(),
+                MenuAnchor(
+                  menuChildren: [
+                    MenuItemButton(
+                      onPressed: () {},
+                      child: const Text("Edit Task"),
+                    ),
+                    MenuItemButton(
+                      onPressed: widget.onDelete,
+                      child: const Text("Delete Task"),
+                    ),
+                  ],
+                  builder: (context, controller, child) {
+                    return IconButton(
+                      onPressed: () {
+                        if (controller.isOpen) {
+                          controller.close();
+                        } else {
+                          controller.open();
+                        }
+                      },
+                      icon: const Icon(Icons.more_vert),
+                    );
+                  },
+                ),
               ],
             ),
             const SizedBox(height: 16),
-            Text(content),
+            Text(widget.content),
             const SizedBox(height: 16),
             Row(
               mainAxisAlignment: .spaceBetween,
               children: [
-                Text(date, style: const TextStyle(color: Colors.grey)),
+                Text(widget.date, style: const TextStyle(color: Colors.grey)),
                 Chip(
                   padding: const .all(4),
                   label: Text(
-                    priority,
+                    widget.priority,
                     style: TextStyle(
-                      color: priority == "High"
+                      color: widget.priority == "High"
                           ? Colors.red
-                          : priority == "Medium"
+                          : widget.priority == "Medium"
                           ? Colors.orange
-                          : priority == "Low"
+                          : widget.priority == "Low"
                           ? Colors.blue
                           : null,
                     ),
@@ -176,4 +422,32 @@ class KanbanBoardScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+class KanbanTask {
+  final String id;
+  String title;
+  String content;
+  String date;
+  String priority;
+
+  KanbanTask({
+    required this.id,
+    required this.title,
+    required this.content,
+    required this.date,
+    required this.priority,
+  });
+}
+
+class KanbanColumnModel {
+  final String id;
+  String title;
+  List<KanbanTask> tasks;
+
+  KanbanColumnModel({
+    required this.id,
+    required this.title,
+    required this.tasks,
+  });
 }
