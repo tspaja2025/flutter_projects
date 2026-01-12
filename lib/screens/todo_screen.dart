@@ -20,7 +20,6 @@ class TodoScreenState extends State<TodoScreen> {
       case TodoView.completed:
         return _todos.where((t) => t.completed).toList();
       case TodoView.all:
-      default:
         return _todos;
     }
   }
