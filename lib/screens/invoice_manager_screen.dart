@@ -10,8 +10,6 @@ class InvoiceManagerScreen extends StatefulWidget {
 }
 
 class InvoiceManagerScreenState extends State<InvoiceManagerScreen> {
-  final FocusNode _childFocusNode = FocusNode(debugLabel: "Menu Button");
-
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -83,7 +81,6 @@ class InvoiceManagerScreenState extends State<InvoiceManagerScreen> {
                               ),
                               const Spacer(),
                               MenuAnchor(
-                                childFocusNode: _childFocusNode,
                                 menuChildren: [
                                   MenuItemButton(
                                     onPressed: () {
@@ -162,7 +159,6 @@ class InvoiceManagerScreenState extends State<InvoiceManagerScreen> {
                                 ],
                                 builder: (context, controller, child) {
                                   return IconButton(
-                                    focusNode: _childFocusNode,
                                     onPressed: () {
                                       if (controller.isOpen) {
                                         controller.close();

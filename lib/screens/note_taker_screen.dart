@@ -13,8 +13,6 @@ class NoteTakerScreen extends StatefulWidget {
 class NoteTakerScreenState extends State<NoteTakerScreen> {
   NoteView _noteView = NoteView.grid;
 
-  final FocusNode _newItemNode = FocusNode(debugLabel: "Menu Button");
-  final FocusNode _exportNode = FocusNode(debugLabel: "Menu Button");
   final String _categoryValue = categoryList.first;
   final String _filterByValue = filterByList.first;
 
@@ -67,8 +65,14 @@ class NoteTakerScreenState extends State<NoteTakerScreen> {
                   const SizedBox(height: 16),
                   Row(
                     children: [
-                      NoteItem(title: "Note Title", content: "Note Content"),
-                      NoteItem(title: "Note Title 1", content: "Note Content"),
+                      NoteItem(
+                        title: "Example note 1",
+                        content: "Note Content",
+                      ),
+                      NoteItem(
+                        title: "Example note 2",
+                        content: "Note Content",
+                      ),
                     ],
                   ),
                 ],
@@ -191,33 +195,6 @@ class NoteTakerScreenState extends State<NoteTakerScreen> {
           },
         ),
         MenuAnchor(
-          childFocusNode: _exportNode,
-          menuChildren: [
-            MenuItemButton(
-              onPressed: () {},
-              child: const Text("Export as JSON"),
-            ),
-            MenuItemButton(
-              onPressed: () {},
-              child: const Text("Export as Text"),
-            ),
-          ],
-          builder: (context, controller, child) {
-            return IconButton(
-              focusNode: _exportNode,
-              onPressed: () {
-                if (controller.isOpen) {
-                  controller.close();
-                } else {
-                  controller.open();
-                }
-              },
-              icon: const Icon(Icons.download_outlined),
-            );
-          },
-        ),
-        MenuAnchor(
-          childFocusNode: _newItemNode,
           menuChildren: [
             MenuItemButton(
               onPressed: () {
@@ -232,8 +209,7 @@ class NoteTakerScreenState extends State<NoteTakerScreen> {
             MenuItemButton(onPressed: () {}, child: const Text("New Category")),
           ],
           builder: (context, controller, child) {
-            return IconButton(
-              focusNode: _newItemNode,
+            return FilledButton.icon(
               onPressed: () {
                 if (controller.isOpen) {
                   controller.close();
@@ -241,7 +217,8 @@ class NoteTakerScreenState extends State<NoteTakerScreen> {
                   controller.open();
                 }
               },
-              icon: const Icon(Icons.more_vert),
+              icon: const Icon(Icons.add),
+              label: const Text("Add"),
             );
           },
         ),
