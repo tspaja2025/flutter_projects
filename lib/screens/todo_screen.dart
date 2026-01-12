@@ -1,7 +1,5 @@
 import "package:flutter/material.dart";
 
-// Add Logic
-
 class TodoScreen extends StatefulWidget {
   const TodoScreen({super.key});
 
@@ -11,6 +9,35 @@ class TodoScreen extends StatefulWidget {
 
 class TodoScreenState extends State<TodoScreen> {
   TodoView _todoView = TodoView.all;
+
+  final List<Todo> _todos = [];
+  final TextEditingController _inputController = TextEditingController();
+
+  List<Todo> get _filteredTodos {
+    switch (_todoView) {
+      case TodoView.active:
+        return _todos.where((t) => !t.completed).toList();
+      case TodoView.completed:
+        return _todos.where((t) => t.completed).toList();
+      case TodoView.all:
+      default:
+        return _todos;
+    }
+  }
+
+  void _addTask(String title) {
+    if (title.trim().isEmpty) return;
+
+    setState(() {
+      _todos.add(
+        Todo(
+          id: DateTime.now().toIso8601String(),
+          title: title,
+          createdAt: DateTime.now(),
+        ),
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +57,7 @@ class TodoScreenState extends State<TodoScreen> {
                     children: [
                       Expanded(
                         child: TextField(
+                          controller: _inputController,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
                             hintText: "What needs to be done?",
@@ -37,7 +65,10 @@ class TodoScreenState extends State<TodoScreen> {
                         ),
                       ),
                       FilledButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          _addTask(_inputController.text);
+                          _inputController.clear();
+                        },
                         child: const Text("Add Task"),
                       ),
                     ],
@@ -73,34 +104,57 @@ class TodoScreenState extends State<TodoScreen> {
                     ],
                   ),
 
-                  // Empty State
                   const SizedBox(height: 16),
-                  Card(
-                    child: Padding(
-                      padding: const .all(16),
-                      child: Column(
-                        children: [
-                          Text(
-                            "No tasks yet.",
-                            style: TextTheme.of(context).titleLarge,
-                          ),
-                          const Text(
-                            "Start by adding a task to get organized.",
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                        ],
+
+                  if (_filteredTodos.isEmpty)
+                    // Empty State
+                    Card(
+                      child: Padding(
+                        padding: const .all(16),
+                        child: Column(
+                          children: [
+                            Text(
+                              "No tasks yet.",
+                              style: TextTheme.of(context).titleLarge,
+                            ),
+                            const Text(
+                              "Start by adding a task to get organized.",
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  else
+                    ..._filteredTodos.map(
+                      (todo) => TodoItem(
+                        todo: todo,
+                        onToggle: () {
+                          setState(() => todo.completed = !todo.completed);
+                        },
+                        onDelete: () {
+                          setState(
+                            () => _todos.removeWhere((t) => t.id == todo.id),
+                          );
+                        },
+                        onEdit: (newTitle) {
+                          setState(() => todo.title = newTitle);
+                        },
                       ),
                     ),
-                  ),
-
-                  const SizedBox(height: 16),
-                  TodoItem(title: "Learn Flutter"),
-                  TodoItem(title: "Build to do app"),
-                  TodoItem(title: "Write documentation"),
                 ],
               ),
             ),
           ),
+          floatingActionButton: isLargeScreen
+              ? null
+              : FloatingActionButton(
+                  onPressed: () {
+                    _addTask(_inputController.text);
+                    Navigator.pop(context);
+                  },
+                  child: const Icon(Icons.add),
+                ),
         );
       },
     );
@@ -110,61 +164,93 @@ class TodoScreenState extends State<TodoScreen> {
 enum TodoView { all, active, completed }
 
 class TodoItem extends StatefulWidget {
-  final String title;
+  final Todo todo;
+  final VoidCallback onToggle;
+  final VoidCallback onDelete;
+  final Function(String) onEdit;
 
-  const TodoItem({super.key, required this.title});
+  const TodoItem({
+    super.key,
+    required this.todo,
+    required this.onToggle,
+    required this.onDelete,
+    required this.onEdit,
+  });
 
   @override
   State<TodoItem> createState() => TodoItemState();
 }
 
 class TodoItemState extends State<TodoItem> {
-  bool isChecked = false;
+  void _showEditDialog() {
+    final TextEditingController controller = TextEditingController(
+      text: widget.todo.title,
+    );
 
-  final FocusNode _childFocusNode = FocusNode(debugLabel: "Menu Button");
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text("Edit Task"),
+        content: TextField(controller: controller),
+        actions: [
+          OutlinedButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("Cancel"),
+          ),
+          FilledButton(
+            onPressed: () {
+              widget.onEdit(controller.text);
+              Navigator.pop(context);
+            },
+            child: const Text("Save"),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
         leading: Checkbox(
-          value: isChecked,
-          onChanged: (bool? value) {
-            setState(() {
-              isChecked = value!;
-            });
-          },
+          value: widget.todo.completed,
+          onChanged: (_) => widget.onToggle(),
         ),
         title: Text(
-          widget.title,
-          style: isChecked
+          widget.todo.title,
+          style: widget.todo.completed
               ? TextStyle(
                   decoration: TextDecoration.lineThrough,
                   color: Colors.grey,
                 )
               : null,
         ),
-        subtitle: const Text(
-          "Created: 29/12/2025",
+        subtitle: Text(
+          "Created: ${widget.todo.createdAt.day}/${widget.todo.createdAt.month}/${widget.todo.createdAt.year}",
           style: TextStyle(color: Colors.grey),
         ),
         trailing: MenuAnchor(
-          childFocusNode: _childFocusNode,
           menuChildren: [
             MenuItemButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pop(context);
+                _showEditDialog();
+              },
               leadingIcon: const Icon(Icons.edit_outlined),
               child: const Text("Edit"),
             ),
             MenuItemButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pop(context);
+                widget.onDelete();
+              },
               leadingIcon: const Icon(Icons.delete_outline),
               child: const Text("Delete"),
             ),
           ],
           builder: (context, controller, child) {
             return IconButton(
-              focusNode: _childFocusNode,
               onPressed: () {
                 if (controller.isOpen) {
                   controller.close();
@@ -179,4 +265,18 @@ class TodoItemState extends State<TodoItem> {
       ),
     );
   }
+}
+
+class Todo {
+  final String id;
+  String title;
+  bool completed;
+  final DateTime createdAt;
+
+  Todo({
+    required this.id,
+    required this.title,
+    this.completed = false,
+    required this.createdAt,
+  });
 }
