@@ -125,7 +125,11 @@ class RibbonBadge extends StatelessWidget {
       alignment: Alignment.center,
       child: Text(
         itemCount,
-        style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900),
+        style: TextStyle(
+          fontSize: 24,
+          fontWeight: FontWeight.w900,
+          color: Colors.indigo,
+        ),
       ),
     );
   }

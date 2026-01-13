@@ -25,9 +25,9 @@ class EventCalendarScreenState extends State<EventCalendarScreen> {
     final now = DateTime.now();
     _eventProvider.addEvent(
       Event(
-        id: '1',
-        title: 'Team Meeting',
-        description: 'Weekly team sync',
+        id: "1",
+        title: "Team Meeting",
+        description: "Weekly team sync",
         startTime: DateTime(now.year, now.month, now.day, 9, 0),
         endTime: DateTime(now.year, now.month, now.day, 10, 0),
         allDay: false,
@@ -37,9 +37,9 @@ class EventCalendarScreenState extends State<EventCalendarScreen> {
 
     _eventProvider.addEvent(
       Event(
-        id: '2',
-        title: 'Lunch with Client',
-        description: 'Business lunch',
+        id: "2",
+        title: "Lunch with Client",
+        description: "Business lunch",
         startTime: DateTime(now.year, now.month, now.day, 12, 30),
         endTime: DateTime(now.year, now.month, now.day, 14, 0),
         allDay: false,
@@ -49,9 +49,9 @@ class EventCalendarScreenState extends State<EventCalendarScreen> {
 
     _eventProvider.addEvent(
       Event(
-        id: '3',
-        title: 'Birthday Party',
-        description: 'John\'s birthday',
+        id: "3",
+        title: "Birthday Party",
+        description: "John\"s birthday",
         startTime: DateTime(now.year, now.month, now.day + 1),
         endTime: DateTime(now.year, now.month, now.day + 1),
         allDay: true,
@@ -113,23 +113,23 @@ class EventCalendarScreenState extends State<EventCalendarScreen> {
   }
 
   String _getMonthYearString() {
-    return '${_getMonthName(_currentMonth.month)} ${_currentMonth.year}';
+    return "${_getMonthName(_currentMonth.month)} ${_currentMonth.year}";
   }
 
   String _getMonthName(int month) {
     const months = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December',
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
     ];
     return months[month - 1];
   }
@@ -276,7 +276,7 @@ class EventCalendarScreenState extends State<EventCalendarScreen> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        '${day.day}',
+                                        "${day.day}",
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           color: isCurrentMonth
@@ -304,7 +304,7 @@ class EventCalendarScreenState extends State<EventCalendarScreen> {
                                       ),
                                       if (dayEvents.length > 3)
                                         Text(
-                                          '+${dayEvents.length - 3} more',
+                                          "+${dayEvents.length - 3} more",
                                           style: const TextStyle(
                                             fontSize: 10,
                                             color: Colors.grey,
@@ -870,7 +870,7 @@ class CreateNewEventScreenState extends State<CreateNewEventScreen> {
                                       OutlinedButton(
                                         onPressed: _openStartTime,
                                         child: Text(
-                                          "${_selectedStartTime.hour.toString().padLeft(2, '0')}:${_selectedStartTime.minute.toString().padLeft(2, '0')}",
+                                          "${_selectedStartTime.hour.toString().padLeft(2, "0")}:${_selectedStartTime.minute.toString().padLeft(2, "0")}",
                                         ),
                                       ),
                                   ],
@@ -893,7 +893,7 @@ class CreateNewEventScreenState extends State<CreateNewEventScreen> {
                                       OutlinedButton(
                                         onPressed: _openEndTime,
                                         child: Text(
-                                          "${_selectedEndTime.hour.toString().padLeft(2, '0')}:${_selectedEndTime.minute.toString().padLeft(2, '0')}",
+                                          "${_selectedEndTime.hour.toString().padLeft(2, "0")}:${_selectedEndTime.minute.toString().padLeft(2, "0")}",
                                         ),
                                       ),
                                   ],

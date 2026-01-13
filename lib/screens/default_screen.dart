@@ -196,7 +196,7 @@ class DefaultScreenState extends State<DefaultScreen> {
                   final columns = _columnCount(constraints.maxWidth);
 
                   return GridView.builder(
-                    padding: const EdgeInsets.all(16),
+                    padding: const .all(16),
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: columns,
                       mainAxisSpacing: 24,

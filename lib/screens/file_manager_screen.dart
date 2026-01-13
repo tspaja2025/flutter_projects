@@ -1,7 +1,5 @@
 import "package:flutter/material.dart";
 
-// Add Logic
-
 class FileManagerScreen extends StatefulWidget {
   const FileManagerScreen({super.key});
 
@@ -11,6 +9,58 @@ class FileManagerScreen extends StatefulWidget {
 
 class FileManagerScreenState extends State<FileManagerScreen> {
   bool _isChecked = false;
+
+  List<File> files = [
+    File(
+      icon: Icons.folder_outlined,
+      name: "Documents",
+      dateModified: DateTime.now(),
+      type: "Folder",
+      size: "--",
+    ),
+    File(
+      icon: Icons.folder_outlined,
+      name: "Images",
+      dateModified: DateTime.now(),
+      type: "Folder",
+      size: "--",
+    ),
+    File(
+      icon: Icons.folder_outlined,
+      name: "Projects",
+      dateModified: DateTime.now(),
+      type: "Folder",
+      size: "--",
+    ),
+    File(
+      icon: Icons.image_outlined,
+      name: "budget.xlsx",
+      dateModified: DateTime.now(),
+      type: "XLSX",
+      size: "2.0 MB",
+    ),
+    File(
+      icon: Icons.description_outlined,
+      name: "notes.txt",
+      dateModified: DateTime.now(),
+      type: "TXT",
+      size: "512 B",
+    ),
+    File(
+      icon: Icons.monitor,
+      name: "presentation.pptx",
+      dateModified: DateTime.now(),
+      type: "PPTX",
+      size: "3.0 MB",
+    ),
+    File(
+      icon: Icons.description_outlined,
+      name: "report.pdf",
+      dateModified: DateTime.now(),
+      type: "PDF",
+      size: "1.0 MB",
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -71,11 +121,7 @@ class FileManagerScreenState extends State<FileManagerScreen> {
 
                   const SizedBox(height: 16),
 
-                  Container(
-                    decoration: BoxDecoration(
-                      border: .all(color: Theme.of(context).dividerColor),
-                      borderRadius: .circular(12),
-                    ),
+                  Card(
                     child: Table(
                       columnWidths: {
                         0: FixedColumnWidth(60),
@@ -93,6 +139,7 @@ class FileManagerScreenState extends State<FileManagerScreen> {
                           ),
                           children: [
                             TableCell(
+                              verticalAlignment: .middle,
                               child: Checkbox(
                                 value: _isChecked,
                                 onChanged: (bool? value) {
@@ -141,544 +188,78 @@ class FileManagerScreenState extends State<FileManagerScreen> {
                         ),
 
                         // Body
-                        TableRow(
-                          decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                color: Theme.of(context).dividerColor,
+                        ...files.map((file) {
+                          return TableRow(
+                            decoration: BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                  color: Theme.of(context).dividerColor,
+                                ),
                               ),
                             ),
-                          ),
-                          children: [
-                            TableCell(
-                              child: Checkbox(
-                                value: _isChecked,
-                                onChanged: (bool? value) {
-                                  setState(() {
-                                    _isChecked = value!;
-                                  });
-                                },
+                            children: [
+                              TableCell(
+                                child: Checkbox(
+                                  value: _isChecked,
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      _isChecked = value!;
+                                    });
+                                  },
+                                ),
                               ),
-                            ),
-                            TableCell(
-                              verticalAlignment: .middle,
-                              child: Row(
-                                children: [
-                                  const Icon(Icons.folder_outlined),
-                                  const Text("Documents"),
-                                ],
+                              TableCell(
+                                verticalAlignment: .middle,
+                                child: Row(
+                                  children: [Icon(file.icon), Text(file.name)],
+                                ),
                               ),
-                            ),
-                            TableCell(
-                              verticalAlignment: .middle,
-                              child: const Text("Jan 12, 2025"),
-                            ),
-                            TableCell(
-                              verticalAlignment: .middle,
-                              child: const Text("Folder"),
-                            ),
-                            TableCell(
-                              verticalAlignment: .middle,
-                              child: const Text("--"),
-                            ),
-                            TableCell(
-                              verticalAlignment: .middle,
-                              child: MenuAnchor(
-                                menuChildren: [
-                                  MenuItemButton(
-                                    onPressed: () {},
-                                    leadingIcon: const Icon(
-                                      Icons.edit_outlined,
+                              TableCell(
+                                verticalAlignment: .middle,
+                                child: Text("${file.dateModified}"),
+                              ),
+                              TableCell(
+                                verticalAlignment: .middle,
+                                child: Text(file.type),
+                              ),
+                              TableCell(
+                                verticalAlignment: .middle,
+                                child: Text(file.size),
+                              ),
+                              TableCell(
+                                verticalAlignment: .middle,
+                                child: MenuAnchor(
+                                  menuChildren: [
+                                    MenuItemButton(
+                                      onPressed: () {},
+                                      leadingIcon: const Icon(
+                                        Icons.edit_outlined,
+                                      ),
+                                      child: const Text("Rename"),
                                     ),
-                                    child: const Text("Rename"),
-                                  ),
-                                  MenuItemButton(
-                                    onPressed: () {},
-                                    leadingIcon: const Icon(
-                                      Icons.delete_outline,
+                                    MenuItemButton(
+                                      onPressed: () {},
+                                      leadingIcon: const Icon(
+                                        Icons.delete_outline,
+                                      ),
+                                      child: const Text("Delete"),
                                     ),
-                                    child: const Text("Delete"),
-                                  ),
-                                ],
-                                builder: (context, controller, child) {
-                                  return IconButton(
-                                    onPressed: () {
-                                      controller.isOpen
-                                          ? controller.close()
-                                          : controller.open();
-                                    },
-                                    icon: const Icon(Icons.more_vert),
-                                  );
-                                },
+                                  ],
+                                  builder: (context, controller, child) {
+                                    return IconButton(
+                                      onPressed: () {
+                                        controller.isOpen
+                                            ? controller.close()
+                                            : controller.open();
+                                      },
+                                      icon: const Icon(Icons.more_vert),
+                                    );
+                                  },
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-
-                        TableRow(
-                          decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                color: Theme.of(context).dividerColor,
-                              ),
-                            ),
-                          ),
-                          children: [
-                            TableCell(
-                              child: Checkbox(
-                                value: _isChecked,
-                                onChanged: (bool? value) {
-                                  setState(() {
-                                    _isChecked = value!;
-                                  });
-                                },
-                              ),
-                            ),
-                            TableCell(
-                              verticalAlignment: .middle,
-                              child: Row(
-                                children: [
-                                  const Icon(Icons.folder_outlined),
-                                  const Text("Images"),
-                                ],
-                              ),
-                            ),
-                            TableCell(
-                              verticalAlignment: .middle,
-                              child: const Text("Jan 12, 2025"),
-                            ),
-                            TableCell(
-                              verticalAlignment: .middle,
-                              child: const Text("Folder"),
-                            ),
-                            TableCell(
-                              verticalAlignment: .middle,
-                              child: const Text("--"),
-                            ),
-                            TableCell(
-                              verticalAlignment: .middle,
-                              child: MenuAnchor(
-                                menuChildren: [
-                                  MenuItemButton(
-                                    onPressed: () {},
-                                    leadingIcon: const Icon(
-                                      Icons.edit_outlined,
-                                    ),
-                                    child: const Text("Rename"),
-                                  ),
-                                  MenuItemButton(
-                                    onPressed: () {},
-                                    leadingIcon: const Icon(
-                                      Icons.delete_outline,
-                                    ),
-                                    child: const Text("Delete"),
-                                  ),
-                                ],
-                                builder: (context, controller, child) {
-                                  return IconButton(
-                                    onPressed: () {
-                                      controller.isOpen
-                                          ? controller.close()
-                                          : controller.open();
-                                    },
-                                    icon: const Icon(Icons.more_vert),
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        TableRow(
-                          decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                color: Theme.of(context).dividerColor,
-                              ),
-                            ),
-                          ),
-                          children: [
-                            TableCell(
-                              child: Checkbox(
-                                value: _isChecked,
-                                onChanged: (bool? value) {
-                                  setState(() {
-                                    _isChecked = value!;
-                                  });
-                                },
-                              ),
-                            ),
-                            TableCell(
-                              verticalAlignment: .middle,
-                              child: Row(
-                                children: [
-                                  const Icon(Icons.folder_outlined),
-                                  const Text("Projects"),
-                                ],
-                              ),
-                            ),
-                            TableCell(
-                              verticalAlignment: .middle,
-                              child: const Text("Jan 12, 2025"),
-                            ),
-                            TableCell(
-                              verticalAlignment: .middle,
-                              child: const Text("Folder"),
-                            ),
-                            TableCell(
-                              verticalAlignment: .middle,
-                              child: const Text("--"),
-                            ),
-                            TableCell(
-                              verticalAlignment: .middle,
-                              child: MenuAnchor(
-                                menuChildren: [
-                                  MenuItemButton(
-                                    onPressed: () {},
-                                    leadingIcon: const Icon(
-                                      Icons.edit_outlined,
-                                    ),
-                                    child: const Text("Rename"),
-                                  ),
-                                  MenuItemButton(
-                                    onPressed: () {},
-                                    leadingIcon: const Icon(
-                                      Icons.delete_outline,
-                                    ),
-                                    child: const Text("Delete"),
-                                  ),
-                                ],
-                                builder: (context, controller, child) {
-                                  return IconButton(
-                                    onPressed: () {
-                                      controller.isOpen
-                                          ? controller.close()
-                                          : controller.open();
-                                    },
-                                    icon: const Icon(Icons.more_vert),
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        TableRow(
-                          decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                color: Theme.of(context).dividerColor,
-                              ),
-                            ),
-                          ),
-                          children: [
-                            TableCell(
-                              child: Checkbox(
-                                value: _isChecked,
-                                onChanged: (bool? value) {
-                                  setState(() {
-                                    _isChecked = value!;
-                                  });
-                                },
-                              ),
-                            ),
-                            TableCell(
-                              verticalAlignment: .middle,
-                              child: Row(
-                                children: [
-                                  const Icon(Icons.image_outlined),
-                                  const Text("budget.xlsx"),
-                                ],
-                              ),
-                            ),
-                            TableCell(
-                              verticalAlignment: .middle,
-                              child: const Text("Jan 12, 2025"),
-                            ),
-                            TableCell(
-                              verticalAlignment: .middle,
-                              child: const Text("XLSX"),
-                            ),
-                            TableCell(
-                              verticalAlignment: .middle,
-                              child: const Text("2.0 MB"),
-                            ),
-                            TableCell(
-                              verticalAlignment: .middle,
-                              child: MenuAnchor(
-                                menuChildren: [
-                                  MenuItemButton(
-                                    onPressed: () {},
-                                    leadingIcon: const Icon(
-                                      Icons.download_outlined,
-                                    ),
-                                    child: const Text("Download"),
-                                  ),
-                                  MenuItemButton(
-                                    onPressed: () {},
-                                    leadingIcon: const Icon(
-                                      Icons.edit_outlined,
-                                    ),
-                                    child: const Text("Rename"),
-                                  ),
-                                  MenuItemButton(
-                                    onPressed: () {},
-                                    leadingIcon: const Icon(
-                                      Icons.delete_outline,
-                                    ),
-                                    child: const Text("Delete"),
-                                  ),
-                                ],
-                                builder: (context, controller, child) {
-                                  return IconButton(
-                                    onPressed: () {
-                                      controller.isOpen
-                                          ? controller.close()
-                                          : controller.open();
-                                    },
-                                    icon: const Icon(Icons.more_vert),
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        TableRow(
-                          decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                color: Theme.of(context).dividerColor,
-                              ),
-                            ),
-                          ),
-                          children: [
-                            TableCell(
-                              child: Checkbox(
-                                value: _isChecked,
-                                onChanged: (bool? value) {
-                                  setState(() {
-                                    _isChecked = value!;
-                                  });
-                                },
-                              ),
-                            ),
-                            TableCell(
-                              verticalAlignment: .middle,
-                              child: Row(
-                                children: [
-                                  const Icon(Icons.description_outlined),
-                                  const Text("notes.txt"),
-                                ],
-                              ),
-                            ),
-                            TableCell(
-                              verticalAlignment: .middle,
-                              child: const Text("Jan 12, 2025"),
-                            ),
-                            TableCell(
-                              verticalAlignment: .middle,
-                              child: const Text("TXT"),
-                            ),
-                            TableCell(
-                              verticalAlignment: .middle,
-                              child: const Text("512 B"),
-                            ),
-                            TableCell(
-                              verticalAlignment: .middle,
-                              child: MenuAnchor(
-                                menuChildren: [
-                                  MenuItemButton(
-                                    onPressed: () {},
-                                    leadingIcon: const Icon(
-                                      Icons.download_outlined,
-                                    ),
-                                    child: const Text("Download"),
-                                  ),
-                                  MenuItemButton(
-                                    onPressed: () {},
-                                    leadingIcon: const Icon(
-                                      Icons.edit_outlined,
-                                    ),
-                                    child: const Text("Rename"),
-                                  ),
-                                  MenuItemButton(
-                                    onPressed: () {},
-                                    leadingIcon: const Icon(
-                                      Icons.delete_outline,
-                                    ),
-                                    child: const Text("Delete"),
-                                  ),
-                                ],
-                                builder: (context, controller, child) {
-                                  return IconButton(
-                                    onPressed: () {
-                                      controller.isOpen
-                                          ? controller.close()
-                                          : controller.open();
-                                    },
-                                    icon: const Icon(Icons.more_vert),
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        TableRow(
-                          decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                color: Theme.of(context).dividerColor,
-                              ),
-                            ),
-                          ),
-                          children: [
-                            TableCell(
-                              child: Checkbox(
-                                value: _isChecked,
-                                onChanged: (bool? value) {
-                                  setState(() {
-                                    _isChecked = value!;
-                                  });
-                                },
-                              ),
-                            ),
-                            TableCell(
-                              verticalAlignment: .middle,
-                              child: Row(
-                                children: [
-                                  const Icon(Icons.monitor),
-                                  const Text("Presentation.pptx"),
-                                ],
-                              ),
-                            ),
-                            TableCell(
-                              verticalAlignment: .middle,
-                              child: const Text("Jan 12, 2025"),
-                            ),
-                            TableCell(
-                              verticalAlignment: .middle,
-                              child: const Text("PPTX"),
-                            ),
-                            TableCell(
-                              verticalAlignment: .middle,
-                              child: const Text("3.0 MB"),
-                            ),
-                            TableCell(
-                              verticalAlignment: .middle,
-                              child: MenuAnchor(
-                                menuChildren: [
-                                  MenuItemButton(
-                                    onPressed: () {},
-                                    leadingIcon: const Icon(
-                                      Icons.download_outlined,
-                                    ),
-                                    child: const Text("Download"),
-                                  ),
-                                  MenuItemButton(
-                                    onPressed: () {},
-                                    leadingIcon: const Icon(
-                                      Icons.edit_outlined,
-                                    ),
-                                    child: const Text("Rename"),
-                                  ),
-                                  MenuItemButton(
-                                    onPressed: () {},
-                                    leadingIcon: const Icon(
-                                      Icons.delete_outline,
-                                    ),
-                                    child: const Text("Delete"),
-                                  ),
-                                ],
-                                builder: (context, controller, child) {
-                                  return IconButton(
-                                    onPressed: () {
-                                      controller.isOpen
-                                          ? controller.close()
-                                          : controller.open();
-                                    },
-                                    icon: const Icon(Icons.more_vert),
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        TableRow(
-                          children: [
-                            TableCell(
-                              child: Checkbox(
-                                value: _isChecked,
-                                onChanged: (bool? value) {
-                                  setState(() {
-                                    _isChecked = value!;
-                                  });
-                                },
-                              ),
-                            ),
-                            TableCell(
-                              verticalAlignment: .middle,
-                              child: Row(
-                                children: [
-                                  const Icon(Icons.description_outlined),
-                                  const Text("report.pdf"),
-                                ],
-                              ),
-                            ),
-                            TableCell(
-                              verticalAlignment: .middle,
-                              child: const Text("Jan 12, 2025"),
-                            ),
-                            TableCell(
-                              verticalAlignment: .middle,
-                              child: const Text("PDF"),
-                            ),
-                            TableCell(
-                              verticalAlignment: .middle,
-                              child: const Text("1.0 MB"),
-                            ),
-                            TableCell(
-                              verticalAlignment: .middle,
-                              child: MenuAnchor(
-                                menuChildren: [
-                                  MenuItemButton(
-                                    onPressed: () {},
-                                    leadingIcon: const Icon(
-                                      Icons.download_outlined,
-                                    ),
-                                    child: const Text("Download"),
-                                  ),
-                                  MenuItemButton(
-                                    onPressed: () {},
-                                    leadingIcon: const Icon(
-                                      Icons.edit_outlined,
-                                    ),
-                                    child: const Text("Rename"),
-                                  ),
-                                  MenuItemButton(
-                                    onPressed: () {},
-                                    leadingIcon: const Icon(
-                                      Icons.delete_outline,
-                                    ),
-                                    child: const Text("Delete"),
-                                  ),
-                                ],
-                                builder: (context, controller, child) {
-                                  return IconButton(
-                                    onPressed: () {
-                                      controller.isOpen
-                                          ? controller.close()
-                                          : controller.open();
-                                    },
-                                    icon: const Icon(Icons.more_vert),
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
+                            ],
+                          );
+                        }),
                       ],
                     ),
                   ),
@@ -690,4 +271,20 @@ class FileManagerScreenState extends State<FileManagerScreen> {
       },
     );
   }
+}
+
+class File {
+  final IconData icon;
+  final String name;
+  final DateTime dateModified;
+  final String type;
+  final String size;
+
+  File({
+    required this.icon,
+    required this.name,
+    required this.dateModified,
+    required this.type,
+    required this.size,
+  });
 }
