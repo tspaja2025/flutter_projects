@@ -66,8 +66,6 @@ class FileManagerScreenState extends State<FileManagerScreen> {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final bool isLargeScreen = constraints.maxWidth >= 720;
-
         return Scaffold(
           appBar: AppBar(title: const Text("File Manager"), centerTitle: true),
           body: SafeArea(

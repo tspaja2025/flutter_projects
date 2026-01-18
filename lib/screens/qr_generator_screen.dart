@@ -377,17 +377,17 @@ class GeneratedQrScreenState extends State<GeneratedQrScreen> {
       // Create temporary file
       final tempDir = await getTemporaryDirectory();
       final file = await File(
-        '${tempDir.path}/qr_code_${DateTime.now().millisecondsSinceEpoch}.png',
+        "${tempDir.path}/qr_code_${DateTime.now().millisecondsSinceEpoch}.png",
       ).writeAsBytes(pngBytes);
 
       // Share the file
       await Share.shareXFiles(
         [XFile(file.path)],
-        text: 'Here\'s my QR code: ${widget.text}',
-        subject: 'QR Code',
+        text: "Here\"s my QR code: ${widget.text}",
+        subject: "QR Code",
       );
     } catch (e) {
-      _showSnackBar('Error sharing QR code: $e');
+      _showSnackBar("Error sharing QR code: $e");
     } finally {
       setState(() {
         _isSharing = false;
@@ -492,7 +492,7 @@ class GeneratedQrScreenState extends State<GeneratedQrScreen> {
                                     const SizedBox(height: 4),
                                     Text(
                                       widget.text.length > 100
-                                          ? '${widget.text.substring(0, 100)}...'
+                                          ? "${widget.text.substring(0, 100)}..."
                                           : widget.text,
                                       style: Theme.of(
                                         context,

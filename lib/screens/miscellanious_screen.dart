@@ -854,43 +854,275 @@ class WindowsElevenCalendar extends StatefulWidget {
 }
 
 class WindowsElevenCalendarState extends State<WindowsElevenCalendar> {
+  DateTime _currentMonth = DateTime(DateTime.now().year, DateTime.now().month);
+  DateTime? _selectedDate;
+
+  final List<String> _weekdays = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
+
+  void _navigateToPreviousMonth() {
+    setState(() {
+      _currentMonth = DateTime(_currentMonth.year, _currentMonth.month - 1);
+    });
+  }
+
+  void _navigateToNextMonth() {
+    setState(() {
+      _currentMonth = DateTime(_currentMonth.year, _currentMonth.month + 1);
+    });
+  }
+
+  void _navigateToToday() {
+    setState(() {
+      _currentMonth = DateTime(DateTime.now().year, DateTime.now().month);
+      _selectedDate = DateTime.now();
+    });
+  }
+
+  String _getMonthYearString() {
+    return "${_getMonthName(_currentMonth.month)} ${_currentMonth.year}";
+  }
+
+  String _getMonthName(int month) {
+    const months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+    return months[month - 1];
+  }
+
+  List<List<DateTime>> _generateCalendarDays() {
+    final firstDayOfMonth = DateTime(
+      _currentMonth.year,
+      _currentMonth.month,
+      1,
+    );
+    final lastDayOfMonth = DateTime(
+      _currentMonth.year,
+      _currentMonth.month + 1,
+      0,
+    );
+
+    // Get weekday of first day (1 = Monday, 7 = Sunday)
+    int firstWeekDay = firstDayOfMonth.weekday;
+    if (firstWeekDay == 7) {
+      firstWeekDay = 0; // Convert Sunday to 0 for out Monday-start week
+    }
+
+    final daysInMonth = lastDayOfMonth.day;
+    final previousMonth = DateTime(_currentMonth.year, _currentMonth.month - 1);
+    final daysInPreviousMonth = DateTime(
+      previousMonth.year,
+      previousMonth.month + 1,
+      0,
+    ).day;
+
+    List<List<DateTime>> weeks = [];
+    List<DateTime> currentWeek = [];
+
+    // Add days from previous month
+    for (int i = 0; i < firstWeekDay; i++) {
+      currentWeek.add(
+        DateTime(
+          previousMonth.year,
+          previousMonth.month,
+          daysInPreviousMonth - firstWeekDay + i + 1,
+        ),
+      );
+    }
+
+    // Add days from current month
+    for (int day = 1; day <= daysInMonth; day++) {
+      currentWeek.add(DateTime(_currentMonth.year, _currentMonth.month, day));
+
+      if (currentWeek.length == 7) {
+        weeks.add(List.from(currentWeek));
+        currentWeek.clear();
+      }
+    }
+
+    // Add days from next month
+    if (currentWeek.isNotEmpty) {
+      int nextMonthDay = 1;
+      while (currentWeek.length < 7) {
+        currentWeek.add(
+          DateTime(_currentMonth.year, _currentMonth.month + 1, nextMonthDay),
+        );
+        nextMonthDay++;
+      }
+      weeks.add(currentWeek);
+    }
+
+    return weeks;
+  }
+
+  bool _isToday(DateTime date) {
+    final now = DateTime.now();
+
+    return date.year == now.year &&
+        date.month == now.month &&
+        date.day == now.day;
+  }
+
+  bool _isSameMonth(DateTime date) {
+    return date.year == _currentMonth.year && date.month == _currentMonth.month;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final calendarWeeks = _generateCalendarDays();
+
     return SizedBox(
-      width: 300,
+      width: 320,
       child: Card(
         child: Padding(
           padding: const .all(16),
           child: Column(
             children: [
-              Row(children: [const Text("Tuesday, 13 January")]),
+              // Header
               Row(
                 children: [
                   TextButton(
-                    onPressed: () {},
-                    child: const Text("January 2026"),
+                    onPressed: _navigateToToday,
+                    child: Text(_getMonthYearString()),
                   ),
                   const Spacer(),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: _navigateToPreviousMonth,
                     icon: const Icon(Icons.arrow_drop_up),
                   ),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: _navigateToNextMonth,
                     icon: const Icon(Icons.arrow_drop_down),
                   ),
                 ],
               ),
+
+              const SizedBox(height: 8),
+
+              // Weekday headers
               Row(
-                children: [
-                  const Text("Mo"),
-                  const Text("Tu"),
-                  const Text("We"),
-                  const Text("Th"),
-                  const Text("Fr"),
-                  const Text("Sa"),
-                  const Text("Su"),
-                ],
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: _weekdays.map((weekday) {
+                  return SizedBox(
+                    width: 40,
+                    child: Text(
+                      weekday,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onSurface.withValues(alpha: 0.7),
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+
+              const SizedBox(height: 8),
+
+              Column(
+                children: calendarWeeks.map((week) {
+                  return Row(
+                    mainAxisAlignment: .spaceEvenly,
+                    children: week.map((day) {
+                      final isToday = _isToday(day);
+                      final isSelected =
+                          _selectedDate != null &&
+                          _selectedDate!.year == day.year &&
+                          _selectedDate!.month == day.month &&
+                          _selectedDate!.day == day.day;
+                      final isCurrentMonth = _isSameMonth(day);
+
+                      return SizedBox(
+                        width: 40,
+                        height: 40,
+                        child: TextButton(
+                          onPressed: () {
+                            setState(() {
+                              _selectedDate = day;
+                              if (!isCurrentMonth) {
+                                _currentMonth = DateTime(day.year, day.month);
+                              }
+                            });
+                          },
+                          style: TextButton.styleFrom(
+                            padding: EdgeInsets.zero,
+                            minimumSize: Size.zero,
+                            backgroundColor: isSelected
+                                ? Theme.of(
+                                    context,
+                                  ).colorScheme.primary.withValues(alpha: 0.2)
+                                : isToday
+                                ? Theme.of(
+                                    context,
+                                  ).colorScheme.primary.withValues(alpha: 0.1)
+                                : null,
+                            foregroundColor: isSelected
+                                ? Theme.of(context).colorScheme.primary
+                                : isCurrentMonth
+                                ? Theme.of(context).colorScheme.onSurface
+                                : Theme.of(context).colorScheme.onSurface
+                                      .withValues(alpha: 0.5),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            side: isToday
+                                ? BorderSide(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.primary,
+                                    width: 1.5,
+                                  )
+                                : null,
+                          ),
+                          child: Text(
+                            day.day.toString(),
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: isSelected || isToday
+                                  ? FontWeight.w600
+                                  : FontWeight.normal,
+                            ),
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  );
+                }).toList(),
+              ),
+
+              const SizedBox(height: 16),
+
+              // Today button
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: _navigateToToday,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  child: const Text(
+                    "Today",
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                  ),
+                ),
               ),
             ],
           ),
